@@ -11,9 +11,10 @@
 
 <script setup lang="ts">
 import LoginCard from './LoginCard.vue';
+
 </script>
 
-<style scope>
+<style scoped>
 .container {
   display: flex;
   width: 100%;
@@ -39,7 +40,6 @@ import LoginCard from './LoginCard.vue';
   display: flex;
   color: white;
   flex-direction: column;
-  align-items: center;
   align-items: flex-start;
   justify-content: center;
   /* background-color: #f0f0f0; */

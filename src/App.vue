@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <LoginPage></LoginPage>
+    <!-- <MainPage></MainPage> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import LoginPage from './components/auth/LoginPage.vue'
+// import MainPage from './components/MainPage.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     LoginPage,
+    // MainPage,
   },
 });
 </script>
