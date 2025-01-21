@@ -1,20 +1,31 @@
 <template>
   <div id="app">
-    <LoginPage></LoginPage>
-    <!-- <MainPage></MainPage> -->
+    <LoginPage v-if="!isAuthenticated"></LoginPage>
+    <MainPage v-else></MainPage>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import LoginPage from './components/auth/LoginPage.vue'
-// import MainPage from './components/MainPage.vue';
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex';
+import LoginPage from './components/auth/LoginPage.vue';
+import MainPage from './components/MainPage.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     LoginPage,
-    // MainPage,
+    MainPage,
+  },
+  setup() {
+    const store = useStore();
+
+    // 使用 Vuex 的 getter 判斷是否已經登入
+    const isAuthenticated = computed(() => store.getters.isAuthenticated);
+
+    return {
+      isAuthenticated,
+    };
   },
 });
 </script>
@@ -42,3 +53,4 @@ html, body {
   color: #2c3e50;
 }
 </style>
+

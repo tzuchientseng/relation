@@ -48,6 +48,7 @@ import LoginCard from './LoginCard.vue';
 @media (max-width: 600px) {
   .container {
     flex-direction: column;
+    margin-bottom: 70px;
   }
 
   .right-side {

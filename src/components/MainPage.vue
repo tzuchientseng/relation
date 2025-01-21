@@ -1,14 +1,23 @@
 <template>
   <div id="app">
     <div class="container">
-      <div id="nav">Navigation</div>
+      <NavBar></NavBar>
       <div id="posts">Posts</div>
       <div id="news">News</div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
+import NavBar from './NavBar.vue';
+ 
+export default defineComponent({
+  name: 'MainPage',
+  components: {
+   NavBar,
+  },
+});
  
 </script>
 
