@@ -25,13 +25,14 @@ const authModule = {
   actions: {
     async login(
       { commit }: ActionContext<State, State>, // 使用 Vuex 的 ActionContext 型別
-      payload: { account: string; password: string }
+      payload: { username: string; password: string }
     ): Promise<any> {
       try {
-        const response = await fetch("https://.....", {
+        const response = await fetch("https://home.sunnytseng.com/api/relation/token/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json", // 新增 Accept Header
           },
           body: JSON.stringify(payload),
         });
@@ -41,17 +42,17 @@ const authModule = {
         }
 
         const data = await response.json();
-        commit("setToken", data.token);
+        commit("setToken", data.access);
         return data;
       } catch (error) {
         console.error(error);
         throw error;
       }
+    }
     },
     logout({ commit }: ActionContext<State, State>): void {
       commit("clearToken");
     },
-  },
 };
 
 export default authModule;
