@@ -4,13 +4,36 @@
       <img src="../../assets/logo.png" alt="logo" id="logo">
     </div>
     <div class="right-side">
-      <LoginCard></LoginCard>
+      <LoginCard 
+          :showLogin="showLogin" 
+          @toggleModal="toggleLoginModal" 
+          @login="handleLogin"
+        />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import  { useStore } from 'vuex';
 import LoginCard from './LoginCard.vue';
+
+const store = useStore();
+const showLogin = ref(false);
+
+const toggleLoginModal = () => {
+  showLogin.value = !showLogin.value;
+}
+
+const handleLogin = async (payload: {userName: string, password: string}) => {
+  try {
+    const reponse = await store.dispatch("auth/login", payload);
+    toggleLoginModal();
+  } catch (error) {
+    console.error(error);
+    alert("Login failed. Please try again.")
+  }
+}
 
 </script>
 

@@ -3,11 +3,17 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     proxy: {
-      '/api': { // 假設你的 API 路徑以 /api 開頭
-        target: 'https://relation.sunnytseng.com',
+      '/api': {
+        target: 'https://home.sunnytseng.com/api',
         changeOrigin: true, // 是否允許跨域
         pathRewrite: { '^/api': '' }, // 將 /api 替換為空（視需求設定）
       },
     },
   },
 });
+
+/*
+// .env.production 文件
+VUE_APP_API_URL=https://home.sunnytseng.com/api
+`const response = await fetch(`${process.env.VUE_APP_API_URL}/relation/token/`, {`
+*/

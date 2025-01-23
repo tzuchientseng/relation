@@ -8,72 +8,52 @@
       <div class="divider">---- or ----</div>
       <button class="create-account">Create Account</button>
       <p class="signin">Already have an account?</p>
-      <button class="login" @click="toggleLoginModal">Login</button>
+      <button class="login" @click="$emit('toggleModal')">Login</button>
     </div>
-  </div>
 
-  <!-- Login Modal -->
-  <div v-if="showLogin" class="modal-overlay" @click.self="toggleLoginModal">
-    <div class="modal-content">
-      <button class="close-btn" @click="toggleLoginModal">&times;</button>
-      <h3>Log In</h3>
-      <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="account">Account</label>
-          <input
-            type="text"
-            id="account"
-            v-model="account"
-            placeholder="Enter your account"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button type="submit" class="submit-btn">Confirm</button>
-      </form>
-      <p>Don't have an account? <a href="#">Sign Up</a></p>
+    <!-- Login Modal -->
+    <div v-if="showLogin" class="modal-overlay" @click.self="$emit('toggleModal')">
+      <div class="modal-content">
+        <button class="close-btn" @click="$emit('toggleModal')">&times;</button>
+        <h3>Log In</h3>
+        <form @submit.prevent="$emit('login', { username: account, password: password })">
+          <div class="form-group">
+            <label for="account">Account</label>
+            <input
+              type="text"
+              id="account"
+              v-model="account"
+              placeholder="Enter your account"
+              required
+              autocomplete="username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+          <button type="submit" class="submit-btn">Confirm</button>
+        </form>
+        <p>Don't have an account? <a href="#">Sign Up</a></p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useStore } from "vuex";
+import { ref, defineProps } from 'vue';
 
-const showLogin = ref(false);
-const account = ref("");
-const password = ref("");
+const props = defineProps<{ showLogin: boolean }>();
 
-const store = useStore();
-
-const toggleLoginModal = (): void => {
-  showLogin.value = !showLogin.value;
-};
-
-const handleLogin = async (): Promise<void> => {
-  try {
-    const payload = {
-      account: account.value,
-      password: password.value,
-    };
-
-    const reponse = await store.dispatch("auth/login", payload);
-    toggleLoginModal();
-    
-  } catch (error) {
-    console.error(error);
-    alert("Login failed. Please try again.")
-  }
-};
+const account = ref('');
+const password = ref('');
 
 </script>
 

@@ -21,8 +21,7 @@ export default defineComponent({
     const store = useStore();
 
     // 使用 Vuex 的 getter 判斷是否已經登入
-    const isAuthenticated = computed(() => store.getters.isAuthenticated);
-
+    const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
     return {
       isAuthenticated,
     };
