@@ -38,10 +38,6 @@
       <span>Premium</span>
     </a>
     <a class="menu-item" href="#">
-      <i class="fas fa-check-circle"></i>
-      <span>Verified Orgs</span>
-    </a>
-    <a class="menu-item" href="#">
       <i class="fas fa-user"></i>
       <span>Profile</span>
     </a>
@@ -50,19 +46,20 @@
       <span>More</span>
     </a>
     <a class="post-button" href="#">Post</a>
-    <button class="logout-btn" @click="handleLogout">Logout</button>
+    <AccountMenu />
+    <!-- <button class="logout-btn" @click="handleLogout">Logout</button> -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
+import AccountMenu from './AccountMenu.vue';
 
 export default defineComponent({
   name: 'NavBar',
   components: {
-
-
+   AccountMenu ,
   },
 
   setup() {
@@ -86,13 +83,12 @@ const store = useStore();
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #000;
   color: #fff;
 }
 
 .sidebar {
   width: 250px;
-  height: 100%vh;
+  height: 100vh;
   background-color: #000;
   padding: 20px;
   display: flex;
@@ -122,7 +118,6 @@ body {
 }
 
 .post-button {
-  margin-top: 20%;
   background-color: #fff;
   color: #000;
   padding: 10px;
@@ -140,9 +135,8 @@ body {
 }
 
 #nav-item {
+  margin-top: 20px;
   width: 50px;
-  margin-top: 100px;
-  margin-bottom: 10px;
 }
 
 .logout-btn {
