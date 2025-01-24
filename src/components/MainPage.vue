@@ -26,7 +26,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 97vh;
   background-color: #000000; /* 父容器背景色 */
 }
 
