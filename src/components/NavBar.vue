@@ -25,10 +25,10 @@
       <i class="fas fa-bookmark"></i>
       <span>Bookmarks</span>
     </a>
-    <a class="menu-item" href="#">
+    <!-- <a class="menu-item" href="#">
       <i class="fas fa-briefcase"></i>
       <span>Jobs</span>
-    </a>
+    </a> -->
     <a class="menu-item" href="#">
       <i class="fas fa-users"></i>
       <span>Communities</span>
