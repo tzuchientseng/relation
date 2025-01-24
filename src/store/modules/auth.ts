@@ -31,8 +31,8 @@ const actions = {
     payload: { username: string; password: string }
   ): Promise<any> {
     try {
-      // const response = await fetch("https://home.sunnytseng.com/api/relation/token/", { // Deploy to server
-      const response = await fetch("/api/relation/token/", {
+      const response = await fetch("https://home.sunnytseng.com/api/relation/token/", { // Deploy to server
+      // const response = await fetch("/api/relation/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
