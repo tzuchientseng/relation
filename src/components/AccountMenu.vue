@@ -175,9 +175,14 @@ const handleClick = (event: MouseEvent) => {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .profile-info,
+
   .more-options {
+    display: none;
+  }
+
+  .profile-info {
     display: none;
   }
 }

@@ -27,18 +27,17 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   height: 97vh;
-  background-color: #000000; /* 父容器背景色 */
+  background-color: #000000;
 }
 
 .container {
   display: flex;
   width: 100vw;
-  max-width: 80%;
   height: 100%;
   justify-content: space-around;
-  align-items: center; /* 子容器內容垂直置中 */
-  border-radius: 8px; /* 圓角 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 
@@ -48,21 +47,33 @@ export default defineComponent({
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* 漸層背景 */
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
   border: none;
-  border-radius: 7px; /* 圓角按鈕 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  border-radius: 7px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.3s ease; /* 添加過渡效果 */
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #ff4b2b, #ff416c); /* 懸停時反向漸層 */
-  transform: scale(1.05); /* 懸停時放大效果 */
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  transform: scale(1.05);
 }
 
 .logout-btn:active {
-  transform: scale(0.95); /* 點擊時縮小效果 */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
+  transform: scale(0.95);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1200px) and (min-width: 768px) {
+  #news{
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #news{
+    display: none;
+  }
 }
 </style>
