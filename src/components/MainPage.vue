@@ -5,30 +5,17 @@
       <div id="posts">Posts</div>
       <div id="news">News</div>
     </div>
-    <button class="logout-btn" @click="handleLogout">Logout</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import NavBar from './NavBar.vue';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'MainPage',
   components: {
     NavBar,
-  },
-  setup() {
-    const store = useStore();
-
-    const handleLogout = () => {
-    store.dispatch("auth/logout");
-    };
-
-    return {
-      handleLogout,
-    };
   },
 });
 </script>

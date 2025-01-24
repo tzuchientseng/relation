@@ -1,58 +1,84 @@
 <template>
   <div class="sidebar">
+    <img id="nav-item" src="../assets/logo.png" alt="icon">
     <a class="menu-item" href="#">
       <i class="fas fa-home"></i>
-      Home
+      <span>Home</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-search"></i>
-      Explore
+      <span>Explore</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-bell"></i>
-      Notifications
+      <span>Notifications</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-envelope"></i>
-      Messages
+      <span>Messages</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-brain"></i>
-      Grok
+      <span>Grok</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-bookmark"></i>
-      Bookmarks
+      <span>Bookmarks</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-briefcase"></i>
-      Jobs
+      <span>Jobs</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-users"></i>
-      Communities
+      <span>Communities</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-star"></i>
-      Premium
+      <span>Premium</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-check-circle"></i>
-      Verified Orgs
+      <span>Verified Orgs</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-user"></i>
-      Profile
+      <span>Profile</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-ellipsis-h"></i>
-      More
+      <span>More</span>
     </a>
     <a class="post-button" href="#">Post</a>
+    <button class="logout-btn" @click="handleLogout">Logout</button>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+
+export default defineComponent({
+  name: 'NavBar',
+  components: {
+
+
+  },
+
+  setup() {
+    const store = useStore();
+
+    const handleLogout = () => {
+      store.dispatch("auth/logout");
+    };
+
+    return {
+      handleLogout,
+    };
+  },
+});
+
+const store = useStore();
 
 </script>
 
@@ -66,7 +92,7 @@ body {
 
 .sidebar {
   width: 250px;
-  height: 100vh;
+  height: 100%vh;
   background-color: #000;
   padding: 20px;
   display: flex;
@@ -78,8 +104,9 @@ body {
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 17px 0;
+  padding: 17px 10px;
   width: 100%;
+  border-radius: 10px;
   cursor: pointer;
   color: #fff;
   text-decoration: none;
@@ -111,5 +138,60 @@ body {
 .post-button:hover {
   background-color: #ddd;
 }
-</style>
 
+#nav-item {
+  width: 50px;
+  margin-top: 100px;
+  margin-bottom: 10px;
+}
+
+.logout-btn {
+  margin-top: 10px;
+  margin-bottom: 100px;
+  padding: 10px 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* 漸層背景 */
+  border: none;
+  border-radius: 7px; /* 圓角按鈕 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  cursor: pointer;
+  transition: all 0.3s ease; /* 添加過渡效果 */
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c); /* 懸停時反向漸層 */
+  transform: scale(1.05); /* 懸停時放大效果 */
+}
+
+.logout-btn:active {
+  transform: scale(0.95); /* 點擊時縮小效果 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 10px;
+    width: 10px;
+  }
+
+  .menu-item {
+    padding: 10px;
+  }
+
+  .menu-item span {
+    display: none;
+  }
+
+  .menu-item i {
+    margin-right: 0;
+  }
+
+  .post-button {
+    width: 40px;
+  }
+}
+
+</style>
