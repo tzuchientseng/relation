@@ -17,9 +17,9 @@
       <i class="fas fa-envelope"></i>
       <span>Messages</span>
     </a>
-    <a class="menu-item" href="#">
-      <i class="fas fa-brain"></i>
-      <span>Grok</span>
+    <a class="menu-item" href="#" @click="showGameModal = true">
+      <i class="fas fa-gamepad"></i>
+      <span>Game</span>
     </a>
     <a class="menu-item" href="#">
       <i class="fas fa-bookmark"></i>
@@ -47,36 +47,43 @@
     </a>
     <a class="post-button" href="#">Post</a>
     <AccountMenu />
-    <!-- <button class="logout-btn" @click="handleLogout">Logout</button> -->
+    
+    <!-- 遊戲彈窗 -->
+    <div v-if="showGameModal" class="game-modal-overlay" @click.self="closeModal">
+      <div class="game-modal">
+        <button class="close-btn" @click="closeModal">&times;</button>
+        <TileMatchingGame />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import AccountMenu from './AccountMenu.vue';
+import TileMatchingGame from '../components/game/TileMatchingGame.vue';
 
 export default defineComponent({
   name: 'NavBar',
   components: {
-   AccountMenu ,
+    AccountMenu,
+    TileMatchingGame,
   },
-
   setup() {
     const store = useStore();
+    const showGameModal = ref(false);
 
-    const handleLogout = () => {
-      store.dispatch("auth/logout");
+    const closeModal = () => {
+      showGameModal.value = false;
     };
 
     return {
-      handleLogout,
+      showGameModal,
+      closeModal,
     };
   },
 });
-
-const store = useStore();
-
 </script>
 
 <style scoped>
@@ -234,6 +241,42 @@ body {
     padding: 7px;
     font-size: 0.7rem;
   }
+}
+
+/* Modal overlay */
+.game-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.game-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000;
 }
 
 </style>
