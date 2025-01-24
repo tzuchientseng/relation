@@ -175,6 +175,8 @@ body {
     position: fixed;
     left: 10px;
     width: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .menu-item {
@@ -190,7 +192,13 @@ body {
   }
 
   .post-button {
+    padding: 5px;
+    font-size: 0.7rem;
     width: 40px;
+  }
+  .logout-btn {
+    padding: 7px;
+    font-size: 0.7rem;
   }
 }
 
