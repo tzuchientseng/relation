@@ -106,7 +106,7 @@ body {
   cursor: pointer;
   color: #fff;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .menu-item i {
@@ -146,29 +146,68 @@ body {
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* 漸層背景 */
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
   border: none;
-  border-radius: 7px; /* 圓角按鈕 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  border-radius: 7px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.3s ease; /* 添加過渡效果 */
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #ff4b2b, #ff416c); /* 懸停時反向漸層 */
-  transform: scale(1.05); /* 懸停時放大效果 */
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  transform: scale(1.05);
 }
 
 .logout-btn:active {
-  transform: scale(0.95); /* 點擊時縮小效果 */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
+  transform: scale(0.95);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1200px) and (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: auto;
+    padding: 15px;
+  }
+
+  .menu-item {
+    padding: 12px 8px;
+    font-size: 18px;
+  }
+
+  .menu-item span {
+    display: inline;
+  }
+
+  .menu-item i {
+    margin-right: 8px;
+  }
+
+  .post-button {
+    width: 50px;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 15px;
+  }
+
+  #nav-item {
+    width: 40px;
+  }
+
+  .logout-btn {
+    padding: 9px;
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    left: 10px;
-    width: 10px;
+    left: 0px;
+    width: auto;
     margin-top: 10px;
     margin-bottom: 10px;
   }
@@ -190,6 +229,7 @@ body {
     font-size: 0.7rem;
     width: 40px;
   }
+
   .logout-btn {
     padding: 7px;
     font-size: 0.7rem;
