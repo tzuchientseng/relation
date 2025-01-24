@@ -1,23 +1,40 @@
 <template>
-  <div class="profile-component">
-    <!-- 使用 :src 動態綁定圖片 -->
-    <img :src="profileImage" alt="Profile Picture" class="profile-image" />
-    <div class="profile-info">
-      <h3>{{ name }}</h3>
-      <p>{{ username }}</p>
+  <div class="profile-container">
+    <!-- 外層 Profile Component -->
+    <div class="profile-component" @click="toggleMenu">
+      <img :src="profileImage" alt="Profile Picture" class="profile-image" />
+      <div class="profile-info">
+        <h3>{{ name }}</h3>
+        <p>{{ username }}</p>
+      </div>
+      <button @click.stop="handleClick" class="more-options">...</button>
     </div>
-    <button @click="handleClick" class="more-options">...</button>
+
+    <!-- 彈出的選單，帶過渡效果 -->
+    <transition name="menu-slide">
+      <div v-if="showMenu" class="menu-dropdown">
+        <p>Setting</p>
+        <button class="logout-btn" @click="handleLogout">Logout {{ username }}</button>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import defaultImagePath from '../assets/male.png'; // 確保正確引入圖片
+import { useStore } from 'vuex';
 
 const defaultImage = defaultImagePath; // 預設圖片
 const profileImage = ref(defaultImage); // 綁定圖片
 const name = ref('Sunny Tseng');
 const username = ref('__SunnyTseng__');
+const showMenu = ref(false); // 控制選單顯示狀態
+const store = useStore();
+
+const handleLogout = () => {
+  store.dispatch("auth/logout");
+};
 
 // 模擬 API 請求
 const fetchProfileImage = async () => {
@@ -26,7 +43,7 @@ const fetchProfileImage = async () => {
     if (response.ok) {
       const data = await response.json();
       if (data && data.image) {
-        profileImage.value = data.image; // 僅覆蓋有效圖片
+        profileImage.value = data.image; // 取得有效圖片
       }
     } else {
       console.error('Failed to fetch profile image:', response.status);
@@ -40,17 +57,32 @@ onMounted(() => {
   fetchProfileImage();
 });
 
-const handleClick = () => {
-  console.log('More options clicked');
+// 切換選單顯示狀態
+const toggleMenu = () => {
+  showMenu.value = !showMenu.value;
+};
+
+// 偵測其他按鈕點擊
+const handleClick = (event: MouseEvent) => {
+  console.log('更多選項按鈕被點擊');
 };
 </script>
 
 <style scoped>
+/* 外層容器 */
+.profile-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 30px;
+}
+
+/* Profile Component */
 .profile-component {
   display: flex;
-  margin-top: 20px;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  position: relative;
 }
 
 .profile-image {
@@ -77,8 +109,74 @@ const handleClick = () => {
   cursor: pointer;
 }
 
+/* 選單樣式 */
+.menu-dropdown {
+  position: absolute;
+  bottom: 100%; /* 選單顯示在 Profile 上方 */
+  left: 0;
+  background: black;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  z-index: 10;
+  opacity: 1; /* 配合過渡效果 */
+  transform: translateY(0); /* 初始位置 */
+}
+
+.menu-dropdown p {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu-dropdown p:hover {
+  background: #333;
+  border-radius: 5px;
+}
+
+/* 過渡效果 */
+.menu-slide-enter-active,
+.menu-slide-leave-active {
+  transition: all 0.3s ease; /* 平滑過渡效果 */
+}
+
+.menu-slide-enter-from {
+  opacity: 0; /* 初始透明度 */
+  transform: translateY(10px); /* 初始位置稍微下移 */
+}
+
+.menu-slide-leave-to {
+  opacity: 0; /* 離開時透明 */
+  transform: translateY(10px); /* 離開時下移 */
+}
+
+.logout-btn {
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* 漸層背景 */
+  border: none;
+  border-radius: 7px; /* 圓角按鈕 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  cursor: pointer;
+  transition: all 0.3s ease; /* 添加過渡效果 */
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c); /* 懸停時反向漸層 */
+  transform: scale(1.05); /* 懸停時放大效果 */
+}
+
+.logout-btn:active {
+  transform: scale(0.95); /* 點擊時縮小效果 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
+}
+
 @media (max-width: 600px) {
-  .profile-info, 
+  .profile-info,
   .more-options {
     display: none;
   }
