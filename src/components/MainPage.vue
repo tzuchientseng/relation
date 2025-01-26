@@ -3,7 +3,9 @@
     <div class="container">
       <NavBar></NavBar>
       <div id="posts">Posts</div>
-      <div id="news">News</div>
+      <div id="news">
+        <NewsBar />
+      </div>
     </div>
   </div>
 </template>
@@ -11,11 +13,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import NavBar from './NavBar.vue';
+import NewsBar from './NewsBar.vue';
 
 export default defineComponent({
   name: 'MainPage',
   components: {
     NavBar,
+    NewsBar,
   },
 });
 </script>

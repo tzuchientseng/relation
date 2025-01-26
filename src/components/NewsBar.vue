@@ -1,6 +1,5 @@
 <template>
-
-
+ -- NEWS BAR --
 </template>
 
 <script setup lang="ts">
