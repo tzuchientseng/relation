@@ -10,7 +10,11 @@
 
       <!-- Menu Dropdown -->
       <div class="menu-dropdown">
-        
+        <AccountProfile 
+          :profileImage="profileImage"
+          :name="name" 
+          :friendsCount="friendsCount"
+        />
         <p>Setting</p>
         <button class="logout-btn" @click="handleLogout">Logout {{ username }}</button>
       </div>
@@ -20,14 +24,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import defaultImagePath from '@/assets/male.png';
 import { useStore } from 'vuex';
+import defaultImagePath from '@/assets/male.png';
+import AccountProfile from './AccountProfile.vue';
 
+const store = useStore();
 const defaultImage = defaultImagePath;
 const profileImage = ref(defaultImage);
 const name = ref('Sunny Tseng');
 const username = ref('__SunnyTseng__');
-const store = useStore();
+const friendsCount = ref(0);
 
 const handleLogout = () => {
   store.dispatch("auth/logout");
