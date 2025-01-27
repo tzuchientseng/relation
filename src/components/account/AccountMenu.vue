@@ -1,7 +1,7 @@
 <template>
   <div class="profile-container">
     <!-- Profile Component -->
-    <div class="profile-component">
+    <div class="profile-component" @click="toggleMenu">
       <img :src="profileImage" alt="Profile Picture" class="profile-image" />
       <div class="profile-info">
         <h3>{{ name }}</h3>
@@ -9,7 +9,10 @@
       </div>
 
       <!-- Menu Dropdown -->
-      <div class="menu-dropdown">
+      <div 
+        class="menu-dropdown" 
+        :class="{ 'active': isMenuVisible }"
+      >
         <AccountProfile 
           :profileImage="profileImage"
           :name="name" 
@@ -34,12 +37,28 @@ const profileImage = ref(defaultImage);
 const name = ref('Sunny Tseng');
 const username = ref('__SunnyTseng__');
 const friendsCount = ref(0);
+const isMenuVisible = ref(false);
+
+const toggleMenu = () => {
+  isMenuVisible.value = !isMenuVisible.value;
+};
+
+const handleClickOutside = (event: Event) => {
+  const profileComponent = document.querySelector('.profile-component');
+  if (profileComponent && !profileComponent.contains(event.target as Node)) {
+    isMenuVisible.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
 
 const handleLogout = () => {
   store.dispatch("auth/logout");
 };
 
-// Simulate API request
+// 模擬 API 請求
 const fetchProfileImage = async () => {
   try {
     const response = await fetch('https://api.example.com/user/profilePict');
@@ -59,6 +78,7 @@ const fetchProfileImage = async () => {
 onMounted(() => {
   fetchProfileImage();
 });
+
 </script>
 
 <style scoped>
@@ -98,7 +118,7 @@ onMounted(() => {
 /* 選單樣式 */
 .menu-dropdown {
   position: absolute;
-  bottom: 100%; /* 選單顯示在 Profile 上方 */
+  bottom: 100%;
   left: 0;
   background: black;
   color: white;
@@ -107,17 +127,22 @@ onMounted(() => {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   width: 200px;
   z-index: 10;
-  opacity: 0; /* 預設透明 */
-  transform: translateY(10px); /* 預設下移位置 */
+  opacity: 0;
+  transform: translateY(10px);
   pointer-events: none; /* 防止被點擊 */
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover 顯示選單 */
-.profile-component:hover .menu-dropdown {
+.menu-dropdown.active {
   opacity: 1; /* 顯示選單 */
   transform: translateY(0); /* 還原位置 */
   pointer-events: auto; /* 啟用點擊 */
+}
+
+.profile-component:hover .menu-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .menu-dropdown p {
