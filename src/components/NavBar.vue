@@ -61,8 +61,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import AccountMenu from './AccountMenu.vue';
 import TileMatchingGame from '../components/game/TileMatchingGame.vue';
+import AccountMenu from './account/AccountMenu.vue';
 
 export default defineComponent({
   name: 'NavBar',

@@ -1,49 +1,46 @@
 <template>
   <div class="profile-container">
-    <!-- 外層 Profile Component -->
-    <div class="profile-component" @click="toggleMenu">
+    <!-- Profile Component -->
+    <div class="profile-component">
       <img :src="profileImage" alt="Profile Picture" class="profile-image" />
       <div class="profile-info">
         <h3>{{ name }}</h3>
         <p>{{ username }}</p>
       </div>
-      <button @click.stop="handleClick" class="more-options">...</button>
-    </div>
 
-    <!-- 彈出的選單，帶過渡效果 -->
-    <transition name="menu-slide">
-      <div v-if="showMenu" class="menu-dropdown">
+      <!-- Menu Dropdown -->
+      <div class="menu-dropdown">
+        
         <p>Setting</p>
         <button class="logout-btn" @click="handleLogout">Logout {{ username }}</button>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import defaultImagePath from '../assets/male.png'; // 確保正確引入圖片
+import defaultImagePath from '@/assets/male.png';
 import { useStore } from 'vuex';
 
-const defaultImage = defaultImagePath; // 預設圖片
-const profileImage = ref(defaultImage); // 綁定圖片
+const defaultImage = defaultImagePath;
+const profileImage = ref(defaultImage);
 const name = ref('Sunny Tseng');
 const username = ref('__SunnyTseng__');
-const showMenu = ref(false); // 控制選單顯示狀態
 const store = useStore();
 
 const handleLogout = () => {
   store.dispatch("auth/logout");
 };
 
-// 模擬 API 請求
+// Simulate API request
 const fetchProfileImage = async () => {
   try {
     const response = await fetch('https://api.example.com/user/profilePict');
     if (response.ok) {
       const data = await response.json();
       if (data && data.image) {
-        profileImage.value = data.image; // 取得有效圖片
+        profileImage.value = data.image;
       }
     } else {
       console.error('Failed to fetch profile image:', response.status);
@@ -56,16 +53,6 @@ const fetchProfileImage = async () => {
 onMounted(() => {
   fetchProfileImage();
 });
-
-// 切換選單顯示狀態
-const toggleMenu = () => {
-  showMenu.value = !showMenu.value;
-};
-
-// 偵測其他按鈕點擊
-const handleClick = (event: MouseEvent) => {
-  console.log('更多選項按鈕被點擊');
-};
 </script>
 
 <style scoped>
@@ -102,13 +89,6 @@ const handleClick = (event: MouseEvent) => {
   color: gray;
 }
 
-.more-options {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
 /* 選單樣式 */
 .menu-dropdown {
   position: absolute;
@@ -121,8 +101,17 @@ const handleClick = (event: MouseEvent) => {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   width: 200px;
   z-index: 10;
-  opacity: 1; /* 配合過渡效果 */
-  transform: translateY(0); /* 初始位置 */
+  opacity: 0; /* 預設透明 */
+  transform: translateY(10px); /* 預設下移位置 */
+  pointer-events: none; /* 防止被點擊 */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover 顯示選單 */
+.profile-component:hover .menu-dropdown {
+  opacity: 1; /* 顯示選單 */
+  transform: translateY(0); /* 還原位置 */
+  pointer-events: auto; /* 啟用點擊 */
 }
 
 .menu-dropdown p {
@@ -175,6 +164,7 @@ const handleClick = (event: MouseEvent) => {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
 }
 
+/* 響應式樣式 */
 @media (max-width: 768px) {
   .profile-info,
 
@@ -184,6 +174,11 @@ const handleClick = (event: MouseEvent) => {
 
   .profile-info {
     display: none;
+  }
+
+  .logout-btn {
+    font-size: 0.7rem;
+
   }
 }
 </style>
