@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div class="container">
-      <NavBar></NavBar>
-      <div id="posts">Posts</div>
+      <NavBar />
+      <PostBar />
       <div id="news">
         <NewsBar />
       </div>
@@ -14,12 +14,14 @@
 import { defineComponent } from 'vue';
 import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
+import PostBar from './PostBar.vue';
 
 export default defineComponent({
   name: 'MainPage',
   components: {
     NavBar,
     NewsBar,
+    PostBar,
   },
 });
 </script>
@@ -38,8 +40,8 @@ export default defineComponent({
   display: flex;
   width: 100vw;
   height: 100%;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center;
+  /* align-items: center; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
