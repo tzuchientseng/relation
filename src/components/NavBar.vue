@@ -175,6 +175,7 @@ body {
   }
 
   #nav-item {
+    margin-top: 0px;
     width: 40px;
   }
 }
@@ -184,7 +185,10 @@ body {
     position: fixed;
     left: 0px;
     width: auto;
-    margin-top: 10px;
+    padding-top: 0px;
+    padding-left: 20px;
+    padding-right: 0px;
+    margin-top: 0px;
     margin-bottom: 10px;
   }
 
@@ -204,6 +208,10 @@ body {
     padding: 5px;
     font-size: 0.7rem;
     width: 40px;
+  }
+
+  #nav-item {
+    margin-top: 0px;
   }
 }
 
