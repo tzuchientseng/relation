@@ -126,7 +126,7 @@ body {
   background-color: #fff;
   color: #000;
   padding: 10px;
-  width: 100%;
+  width: 70%;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
@@ -168,7 +168,7 @@ body {
   }
 
   .post-button {
-    width: 50px;
+    width: 70px;
     padding: 8px;
     font-size: 14px;
     border-radius: 15px;
