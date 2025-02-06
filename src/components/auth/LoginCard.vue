@@ -5,10 +5,10 @@
     <div class="buttons">
       <button class="google">Sign in with Google</button>
       <button class="apple">Sign in with Apple</button>
-      <div class="divider">---- or ----</div>
-      <button class="create-account">Create Account</button>
-      <p class="signin">Already have an account?</p>
       <button class="login" @click="$emit('toggleModal')">Login</button>
+      <div class="divider">---- or ----</div>
+      <p class="signin">No account yet?</p>
+      <button class="create-account">Create Account</button>
     </div>
 
     <!-- Login Modal -->

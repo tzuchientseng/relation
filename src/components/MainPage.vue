@@ -1,28 +1,61 @@
 <template>
   <div id="app">
-    <div class="container">
-      <NavBar />
-      <PostBar />
-      <div id="news">
-        <NewsBar />
-      </div>
+    <!-- Initial Logo View -->
+    <div v-if="!showAnimatedText && !showApp" class="logo-container">
+      <img src="@/assets/logo.png" alt="Logo" class="logo">
     </div>
+
+    <!-- Animated Text View -->
+    <div v-if="showAnimatedText && !showApp" class="animated-text">
+      <h1>{{ displayedText }}</h1>
+    </div>
+
+    <!-- Full Application View -->
+    <transition name="fade">
+      <div v-if="showApp" class="container">
+        <NavBar />
+        <PostBar />
+        <div id="news">
+          <NewsBar />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, defineProps } from 'vue';
 import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
 import PostBar from './PostBar.vue';
 
-export default defineComponent({
-  name: 'MainPage',
-  components: {
-    NavBar,
-    NewsBar,
-    PostBar,
-  },
+const props = defineProps<{ name?: string }>();
+const userName = props.name?.trim() || "Guest";
+
+const displayedText = ref('');
+const showAnimatedText = ref(false);
+const showApp = ref(false);
+
+const animateText = (text: string) => {
+  let i = 0;
+  displayedText.value = "";
+  const interval = setInterval(() => {
+    displayedText.value += text[i];
+    i++;
+    if (i === text.length) clearInterval(interval);
+  }, 50);
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    showAnimatedText.value = true;
+
+    animateText(`Hello, ${userName}!`);
+
+    setTimeout(() => {
+      showApp.value = true;
+    }, 1200);
+  }, 1000);
 });
 </script>
 
@@ -36,49 +69,61 @@ export default defineComponent({
   background-color: #000000;
 }
 
+/* Centered Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+}
+
+.logo {
+  width: 150px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animated Text */
+.animated-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Full App Container */
 .container {
   display: flex;
   width: 100vw;
   height: 100%;
   justify-content: center;
-  /* align-items: center; */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 
-.logout-btn {
-  margin-bottom: 100px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-  border: none;
-  border-radius: 7px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
+/* Fade Transition */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.7s ease-in-out;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+  /* transform: translateY(0px); */
+}
+.fade-enter-to, .fade-leave-from {
+  opacity: 1;
+  /* transform: none; */
 }
 
-.logout-btn:hover {
-  background: linear-gradient(135deg, #ff4b2b, #ff416c);
-  transform: scale(1.05);
-}
-
-.logout-btn:active {
-  transform: scale(0.95);
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 1200px) and (min-width: 768px) {
-  #news{
+/* Responsive: Hide news on smaller screens */
+@media (max-width: 1200px) {
+  #news {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-  #news{
+  #news {
     display: none;
   }
 }

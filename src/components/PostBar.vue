@@ -51,6 +51,7 @@ export default defineComponent({
   text-align: center;
   line-height: 50px; /* 垂直置中 */
 }
+
 @media (max-width: 1200px) and (min-width: 768px) {
 .post-container {
   width: 70%;
