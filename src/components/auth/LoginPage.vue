@@ -1,43 +1,92 @@
 <template>
-  <div class="container">
-    <div class="left-side">
-      <img src="../../assets/logo.png" alt="logo" id="logo">
-    </div>
-    <div class="right-side">
-      <LoginCard 
+  <!-- Initial Icon View -->
+  <div v-if="showIcon" class="icon">
+    <img src="@/assets/logo.png" alt="Logo" class="icon-img">
+  </div>
+
+  <div v-else class="container">
+    <transition name="left-slide" appear>
+      <div class="left-side">
+        <img src="../../assets/logo.png" alt="logo" id="logo">
+      </div>
+    </transition>
+
+    <transition name="right-slide" appear>
+      <div class="right-side">
+        <LoginCard 
           :showLogin="showLogin" 
           @toggleModal="toggleLoginModal" 
           @login="handleLogin"
         />
-    </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import  { useStore } from 'vuex';
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import LoginCard from './LoginCard.vue';
 
 const store = useStore();
 const showLogin = ref(false);
+const showIcon = ref(true);
 
 const toggleLoginModal = () => {
   showLogin.value = !showLogin.value;
-}
+};
 
-const handleLogin = async (payload: {userName: string, password: string}) => {
+const handleLogin = async (payload: { userName: string; password: string }) => {
   try {
-    const reponse = await store.dispatch("auth/login", payload);
+    const response = await store.dispatch("auth/login", payload);
     toggleLoginModal();
+    showIcon.value = false;
   } catch (error) {
     console.error(error);
-    alert("Login failed. Please try again.")
+    alert("Login failed. Please try again.");
   }
-}
+};
 
+onMounted(() => {
+  setTimeout(() => {
+    showIcon.value = false;
+  }, 1000);
+});
 </script>
 
 <style scoped>
+.left-slide-enter-active {
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.left-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.right-slide-enter-active {
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.right-slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.icon {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-img {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -46,16 +95,15 @@ const handleLogin = async (payload: {userName: string, password: string}) => {
 
 .left-side {
   flex: 4;
-  margin-top: 0px;
   display: flex;
-  align-items: center; /* 垂直置中 */
-  justify-content: center; /* 水平置中 */
+  align-items: center;
+  justify-content: center;
 }
 
 #logo {
-  max-width: 50%; /* 確保圖片不會超出父容器 */
-  max-height: 50%; /* 確保圖片高度不會超過容器 */
-  object-fit: contain; /* 確保圖片按比例縮放，適應容器 */
+  max-width: 50%;
+  max-height: 50%;
+  object-fit: contain;
 }
 
 .right-side {
@@ -65,7 +113,6 @@ const handleLogin = async (payload: {userName: string, password: string}) => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  /* background-color: #f0f0f0; */
 }
 
 @media (max-width: 600px) {
@@ -73,7 +120,6 @@ const handleLogin = async (payload: {userName: string, password: string}) => {
     flex-direction: column;
     margin-bottom: 70px;
   }
-
   .right-side {
     align-items: center;
   }
