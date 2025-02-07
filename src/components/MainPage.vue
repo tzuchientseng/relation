@@ -24,17 +24,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, computed } from 'vue';
+import { useStore } from 'vuex';
 import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
 import PostBar from './PostBar.vue';
 
-const props = defineProps<{ name?: string }>();
-const userName = props.name?.trim() || "Guest";
-
 const displayedText = ref('');
 const showAnimatedText = ref(false);
 const showApp = ref(false);
+const store = useStore();
+
+// const props = defineProps<{ name?: string }>();
+// const userName = props.name?.trim() || "Guest";
+const userName = computed(() => store.state.auth.userName?.trim() || "Guest");
 
 const animateText = (text: string) => {
   let i = 0;
@@ -50,7 +53,8 @@ onMounted(() => {
   setTimeout(() => {
     showAnimatedText.value = true;
 
-    animateText(`Hello, ${userName}!`);
+    // animateText(`Hello, ${userName}!`); // props
+    animateText(`Hello, ${userName.value}!`);
 
     setTimeout(() => {
       showApp.value = true;

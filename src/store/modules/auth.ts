@@ -1,10 +1,12 @@
 import { ActionContext } from "vuex";
 
 interface State {
+  userName: string,
   token: string | null;
 }
 
 const state: State = {
+  userName: localStorage.getItem("userName") || "",
   token: localStorage.getItem("token") || null,
 };
 
@@ -15,12 +17,18 @@ const getters = {
 };
 
 const mutations = {
+  setName (state: State, name: string): void {
+    state.userName = name;
+    localStorage.setItem("userName", name);
+  },
   setToken(state: State, token: string): void {
     state.token = token;
     localStorage.setItem("token", token);
   },
-  clearToken(state: State): void {
+  clearUser(state: State): void {
+    state.userName = "";
     state.token = null;
+    localStorage.removeItem("userName");
     localStorage.removeItem("token");
   },
 };
@@ -47,6 +55,7 @@ const actions = {
 
       const data = await response.json();
       commit("setToken", data.access);
+      commit("setName", data.name);
       return data;
     } catch (error) {
       console.error(error);
@@ -54,7 +63,7 @@ const actions = {
     }
   },
   logout({ commit }: ActionContext<State, State>): void {
-    commit("clearToken");
+    commit("clearUser");
   },
 };
 
