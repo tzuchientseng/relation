@@ -10,9 +10,11 @@ Vuex 4: actions → state
 
 import { createStore } from 'vuex'
 import auth from './modules/auth'
+import { postModule } from './modules/postModule'  // 假設你在 postModule.ts 有 export { postModule }
 
 export default createStore({
   modules: {
     auth,
+    postModule, // key 就是 postModule
   }
 })

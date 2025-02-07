@@ -1,3 +1,17 @@
+// const { defineConfig } = require('@vue/cli-service')
+// module.exports = defineConfig({
+//   transpileDependencies: true,
+//   devServer: {
+//     proxy: {},
+//   },
+// });
+
+/*
+// .env.production 文件
+VUE_APP_API_URL=https://home.sunnytseng.com/api
+`const response = await fetch(`${process.env.VUE_APP_API_URL}/relation/token/`, {`
+*/
+
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
@@ -11,9 +25,3 @@ module.exports = defineConfig({
     },
   },
 });
-
-/*
-// .env.production 文件
-VUE_APP_API_URL=https://home.sunnytseng.com/api
-`const response = await fetch(`${process.env.VUE_APP_API_URL}/relation/token/`, {`
-*/

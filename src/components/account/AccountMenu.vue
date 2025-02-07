@@ -4,8 +4,8 @@
     <div class="profile-component" @click="toggleMenu">
       <img :src="profileImage" alt="Profile Picture" class="profile-image" />
       <div class="profile-info">
-        <h3>{{ name }}</h3>
-        <p>{{ username }}</p>
+        <h3>{{ userName }}</h3>
+        <p>_{{ Account }}_</p>
       </div>
 
       <!-- Menu Dropdown -->
@@ -15,18 +15,17 @@
       >
         <AccountProfile 
           :profileImage="profileImage"
-          :name="name" 
           :friendsCount="friendsCount"
         />
         <p>Setting</p>
-        <button class="logout-btn" @click="handleLogout">Logout {{ username }}</button>
+        <button class="logout-btn" @click="handleLogout">Logout {{ userName }}</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import defaultImagePath from '@/assets/male.png';
 import AccountProfile from './AccountProfile.vue';
@@ -34,10 +33,10 @@ import AccountProfile from './AccountProfile.vue';
 const store = useStore();
 const defaultImage = defaultImagePath;
 const profileImage = ref(defaultImage);
-const name = ref('Sunny Tseng');
-const username = ref('__SunnyTseng__');
 const friendsCount = ref(0);
 const isMenuVisible = ref(false);
+const Account = computed(() => store.state.auth.account?.trim() || "_Account_");
+const userName = computed(() => store.state.auth.userName?.trim() || "Guest");
 
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
@@ -58,7 +57,6 @@ const handleLogout = () => {
   store.dispatch("auth/logout");
 };
 
-// 模擬 API 請求
 const fetchProfileImage = async () => {
   try {
     const response = await fetch('https://api.example.com/user/profilePict');
@@ -82,14 +80,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 外層容器 */
 .profile-container {
   position: relative;
   display: inline-block;
   margin-top: 30px;
 }
 
-/* Profile Component */
 .profile-component {
   display: flex;
   align-items: center;
@@ -115,7 +111,6 @@ onMounted(() => {
   color: gray;
 }
 
-/* 選單樣式 */
 .menu-dropdown {
   position: absolute;
   bottom: 100%;
@@ -129,14 +124,14 @@ onMounted(() => {
   z-index: 10;
   opacity: 0;
   transform: translateY(10px);
-  pointer-events: none; /* 防止被點擊 */
+  pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .menu-dropdown.active {
-  opacity: 1; /* 顯示選單 */
-  transform: translateY(0); /* 還原位置 */
-  pointer-events: auto; /* 啟用點擊 */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .profile-component:hover .menu-dropdown {
@@ -156,20 +151,19 @@ onMounted(() => {
   border-radius: 5px;
 }
 
-/* 過渡效果 */
 .menu-slide-enter-active,
 .menu-slide-leave-active {
-  transition: all 0.3s ease; /* 平滑過渡效果 */
+  transition: all 0.3s ease;
 }
 
 .menu-slide-enter-from {
-  opacity: 0; /* 初始透明度 */
-  transform: translateY(10px); /* 初始位置稍微下移 */
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .menu-slide-leave-to {
-  opacity: 0; /* 離開時透明 */
-  transform: translateY(10px); /* 離開時下移 */
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .logout-btn {
@@ -177,25 +171,24 @@ onMounted(() => {
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b); /* 漸層背景 */
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
   border: none;
-  border-radius: 7px; /* 圓角按鈕 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  border-radius: 7px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.3s ease; /* 添加過渡效果 */
+  transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #ff4b2b, #ff416c); /* 懸停時反向漸層 */
-  transform: scale(1.05); /* 懸停時放大效果 */
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  transform: scale(1.05);
 }
 
 .logout-btn:active {
-  transform: scale(0.95); /* 點擊時縮小效果 */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 點擊時降低陰影 */
+  transform: scale(0.95);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* 響應式樣式 */
 @media (max-width: 768px) {
   .profile-info,
 
