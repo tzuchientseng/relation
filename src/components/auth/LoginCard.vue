@@ -137,8 +137,9 @@ button.create-account {
 }
 
 .modal-content {
-  position: relative; /* Ensure the close button is positioned relative to this container */
-  background: linear-gradient(135deg, #047baa, #02919b);
+  position: relative;
+  /* background: linear-gradient(135deg, #047baa, #02919b); */
+  background: linear-gradient(135deg, #0d0d0d, #161616);
   border-radius: 15px;
   padding: 20px;
   max-width: 400px;
@@ -203,15 +204,15 @@ a:hover {
 
 /* Close Button */
 .close-btn {
-  position: absolute; /* Position the button relative to the modal content */
-  top: 10px; /* Adjust the vertical position */
-  right: 10px; /* Adjust the horizontal position */
-  background: none; /* Remove default button background */
-  border: none; /* Remove default button border */
-  font-size: 1.5rem; /* Adjust the font size */
-  color: white; /* Set the color to white */
-  cursor: pointer; /* Add a pointer cursor for interactivity */
-  z-index: 1; /* Ensure it appears above the modal content */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  z-index: 1;
 }
 
 

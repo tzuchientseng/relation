@@ -21,22 +21,22 @@
       <i class="fas fa-gamepad"></i>
       <span>Game</span>
     </a>
-    <a class="menu-item" href="#">
+    <!-- <a class="menu-item" href="#">
       <i class="fas fa-bookmark"></i>
       <span>Bookmarks</span>
-    </a>
+    </a> -->
     <!-- <a class="menu-item" href="#">
       <i class="fas fa-briefcase"></i>
       <span>Jobs</span>
     </a> -->
-    <a class="menu-item" href="#">
+    <!-- <a class="menu-item" href="#">
       <i class="fas fa-users"></i>
       <span>Communities</span>
-    </a>
-    <a class="menu-item" href="#">
+    </a> -->
+    <!-- <a class="menu-item" href="#">
       <i class="fas fa-star"></i>
       <span>Premium</span>
-    </a>
+    </a> -->
     <a class="menu-item" href="#">
       <i class="fas fa-user"></i>
       <span>Profile</span>
@@ -186,7 +186,7 @@ body {
     left: 0px;
     width: auto;
     padding-top: 0px;
-    padding-left: 20px;
+    padding-left: 10px;
     padding-right: 0px;
     margin-top: 0px;
     margin-bottom: 10px;
@@ -211,7 +211,7 @@ body {
   }
 
   #nav-item {
-    margin-top: 0px;
+    margin-top: 20px;
   }
 }
 
