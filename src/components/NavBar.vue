@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="{ hidden: !isVisible }">
     <img id="nav-item" src="../assets/logo.png" alt="icon">
     <a class="menu-item" href="#">
       <i class="fas fa-home"></i>
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import TileMatchingGame from '../components/game/TileMatchingGame.vue';
 import AccountMenu from './account/AccountMenu.vue';
 
@@ -76,9 +76,44 @@ export default defineComponent({
       showGameModal.value = false;
     };
 
+  // 控制是否可見
+      const isVisible = ref(true);
+      let lastScrollPosition = 0;
+
+      // 僅在小螢幕（<= 768px）時，才啟用捲動隱藏
+      const handleScroll = () => {
+        // 判斷螢幕寬度
+        if (window.innerWidth > 768) {
+          // 大螢幕：保持顯示，不做隱藏
+          isVisible.value = true;
+          return;
+        }
+
+        // 小螢幕情況：偵測向上 / 向下
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > lastScrollPosition) {
+          // 向下 → 隱藏
+          isVisible.value = false;
+        } else {
+          // 向上 → 顯示
+          isVisible.value = true;
+        }
+        lastScrollPosition = currentScroll;
+      };
+
+      onMounted(() => {
+        // 監聽滾動
+        window.addEventListener('scroll', handleScroll);
+      });
+
+      onUnmounted(() => {
+        window.removeEventListener('scroll', handleScroll);
+      });
+
     return {
       showGameModal,
       closeModal,
+      isVisible
     };
   },
 });
@@ -143,7 +178,6 @@ body {
   margin-top: 20px;
   width: 50px;
 }
-
 
 @media (max-width: 1200px) and (min-width: 768px) {
   .sidebar {
@@ -213,6 +247,10 @@ body {
   #nav-item {
     margin-top: 20px;
   }
+
+  .sidebar.hidden {
+    transform: translateX(-100%); /* 往左滑出 */
+  }
 }
 
 /* Modal overlay */
@@ -250,5 +288,4 @@ body {
   cursor: pointer;
   color: #000;
 }
-
 </style>
