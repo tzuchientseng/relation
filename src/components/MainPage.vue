@@ -64,7 +64,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 原本的 #app {...} 改成 .main-page {...} */
 .main-page {
   display: flex;
   flex-direction: column;
@@ -75,7 +74,6 @@ onMounted(() => {
   background-color: #000000;
 }
 
-/* Centered Logo */
 .logo-container {
   display: flex;
   justify-content: center;
@@ -88,7 +86,6 @@ onMounted(() => {
   animation: fadeIn 1s ease-in-out;
 }
 
-/* Animated Text */
 .animated-text {
   font-size: 2rem;
   font-weight: bold;
@@ -97,7 +94,6 @@ onMounted(() => {
   animation: fadeIn 1s ease-in-out;
 }
 
-/* Full App Container */
 .container {
   display: flex;
   width: 100vw;
@@ -108,7 +104,6 @@ onMounted(() => {
   padding: 20px;
 }
 
-/* Fade Transition */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.7s ease-in-out;
@@ -122,7 +117,6 @@ onMounted(() => {
   opacity: 1;
 }
 
-/* Responsive: Hide news on smaller screens */
 @media (max-width: 1200px) {
   #news {
     display: none;
