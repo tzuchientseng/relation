@@ -20,6 +20,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isAuthenticated = computed(() => store.getters["auth/isAuthenticated"]);
+
     return {
       isAuthenticated,
     };
