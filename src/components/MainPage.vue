@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="main-page">
     <!-- Initial Logo View -->
     <div v-if="!showAnimatedText && !showApp" class="logo-container">
       <img src="@/assets/logo.png" alt="Logo" class="logo">
@@ -24,21 +24,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
 import PostBar from './PostBar.vue';
 
+// 維持原本的變數 / 狀態
 const displayedText = ref('');
 const showAnimatedText = ref(false);
 const showApp = ref(false);
-const store = useStore();
 
-// const props = defineProps<{ name?: string }>();
-// const userName = props.name?.trim() || "Guest";
+const store = useStore();
 const userName = computed(() => store.state.auth.userName?.trim() || "Guest");
 
+// 打字動畫
 const animateText = (text: string) => {
   let i = 0;
   displayedText.value = "";
@@ -53,7 +53,7 @@ onMounted(() => {
   setTimeout(() => {
     showAnimatedText.value = true;
 
-    // animateText(`Hello, ${userName}!`); // props
+    // animateText(`Hello, ${userName}!`);
     animateText(`Hello, ${userName.value}!`);
 
     setTimeout(() => {
@@ -64,12 +64,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#app {
+/* 原本的 #app {...} 改成 .main-page {...} */
+.main-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 97vh;
+  /* height: 97vh; */
+  min-height: 97vh;
   background-color: #000000;
 }
 
@@ -107,16 +109,17 @@ onMounted(() => {
 }
 
 /* Fade Transition */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.7s ease-in-out;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
-  /* transform: translateY(0px); */
 }
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
-  /* transform: none; */
 }
 
 /* Responsive: Hide news on smaller screens */
@@ -125,7 +128,6 @@ onMounted(() => {
     display: none;
   }
 }
-
 @media (max-width: 768px) {
   #news {
     display: none;
