@@ -34,7 +34,6 @@ export default defineComponent({
   padding: 0;
 }
 
-/* 移除預設的 margin 和 padding，防止留白 */
 html, body {
   margin: 0;
   padding: 0;
