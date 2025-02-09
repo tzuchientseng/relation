@@ -1,3 +1,9 @@
+<!-- 
+# TODO:
+
+- Nav scrolling-animation
+
+-->
 <template>
   <div class="sidebar" :class="{ hidden: !isVisible }">
     <img id="nav-item" src="../assets/logo.png" alt="icon">

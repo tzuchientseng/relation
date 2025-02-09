@@ -120,8 +120,20 @@ onMounted(() => {
     flex-direction: column;
     margin-bottom: 70px;
   }
+
+  .left-side {
+    height: auto;
+    max-height: 30vh;
+    /* flex: none; */
+  }
+
   .right-side {
+    flex: 3;
+    display: flex;
+    color: white;
+    flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
   }
 }
 </style>
