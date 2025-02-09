@@ -23,7 +23,8 @@
       <i class="fas fa-envelope"></i>
       <span>Messages</span>
     </a>
-    <a class="menu-item" href="#" @click="showGameModal = true">
+    <!-- <a class="menu-item" href="#" @click="showGameModal = true"> -->
+    <a class="menu-item" href="#">
       <i class="fas fa-gamepad"></i>
       <span>Game</span>
     </a>
