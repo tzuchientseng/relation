@@ -30,7 +30,6 @@ import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
 import PostBar from './PostBar.vue';
 
-// 維持原本的變數 / 狀態
 const displayedText = ref('');
 const showAnimatedText = ref(false);
 const showApp = ref(false);
@@ -38,7 +37,6 @@ const showApp = ref(false);
 const store = useStore();
 const userName = computed(() => store.state.auth.userName?.trim() || "Guest");
 
-// 打字動畫
 const animateText = (text: string) => {
   let i = 0;
   displayedText.value = "";

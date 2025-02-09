@@ -1,3 +1,10 @@
+<!-- 
+# TODO:
+
+- 需要顯示所有照片
+- RWD: post-info
+
+-->
 <template>
   <div class="post">
     <div class="post-header">
@@ -5,13 +12,12 @@
       <div class="post-info">
         <strong>{{ post.username }}</strong>
         <span>@{{ post.userId }}</span>
-        <span class="post-time">{{ formatDate(post.createTime) }}</span>
+        <span class="post-time"> ● {{ formatDate(post.createTime) }}</span>
       </div>
     </div>
 
     <p class="post-content">{{  post.content }}</p>
 
-    <!-- TODO: 需要顯示所有照片 -->
     <div v-if="post.media && post.media.length">
       <img :src="post.media[0]" alt="Post Media" class="post-media">
     </div>
@@ -45,17 +51,17 @@ function formatDate(date: Date | string): string {
   const diffInSeconds = Math.floor((now - past) / 1000);
   
   if (diffInSeconds < 60) {
-    return `${diffInSeconds} seconds ago`;
+    return `${diffInSeconds}s ago`;
   }
   
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   if (diffInMinutes < 60) {
-    return `${diffInMinutes} minutes ago`;
+    return `${diffInMinutes} min ago`;
   }
 
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) {
-    return `${diffInHours} hours ago`;
+    return `${diffInHours} h ago`;
   }
 
   const diffInDays = Math.floor(diffInHours / 24);
@@ -117,6 +123,13 @@ function deletePost(postId: string) {
   padding: 10px;
 }
 
+.post-time {
+    margin-top: 2px;
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+}
+
 .post-actions {
   display: flex;
   gap: 10px;
@@ -137,4 +150,20 @@ button {
 
 .retweeted {
   color: green;
-}</style>
+}
+
+@media (max-width: 480px) {
+
+.post-info {
+  font-size: 70%;
+}
+
+.post-time {
+  font-size: 70%;
+}
+}
+
+.post-content {
+  font-size: 77%;
+}
+</style>

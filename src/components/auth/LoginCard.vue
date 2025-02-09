@@ -112,7 +112,7 @@ button.create-account {
 }
 
 .divider {
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
   font-size: 0.9rem;
   color: gray;
 }
