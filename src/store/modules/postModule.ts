@@ -1,3 +1,4 @@
+//  以下為假資料
 const state: PostState = {
   posts: [
     {
@@ -160,10 +161,11 @@ const state: PostState = {
   userName: 'TestUser',
   token: null,
 };
-
-//  以上為假資料
+//
 
 import { Module, MutationTree, ActionTree, GetterTree } from 'vuex';
+
+const API_URL = '/api/relation/posts';
 
 export interface Post {
   id: string;
@@ -188,16 +190,12 @@ export interface PostState {
   token: string | null;
 }
 
-const API_URL = '/api/relation/posts'; // 你後端的路徑
-
 // const state: PostState = {
 //   posts: JSON.parse(localStorage.getItem('posts') || '[]'),
 //   account: localStorage.getItem('account') || '',
 //   userName: localStorage.getItem('userName') || '',
 //   token: localStorage.getItem('token') || null,
 // };
-
-
 
 const getters: GetterTree<PostState, any> = {
   getAllPosts: (state) => state.posts,
@@ -311,11 +309,11 @@ const actions: ActionTree<PostState, any> = {
   },
 };
 
+// Module<S, R> 的型別參數： S：此模組內的 state 的型別 R：根 store 的 state 的型別
 export const postModule: Module<PostState, any> = {
   namespaced: true,
   state,
   getters,
   mutations,
-  actions, // ← 這裡不要註解掉，保證 actions 註冊進去
+  actions,
 };
-
