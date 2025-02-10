@@ -2,6 +2,7 @@
   <div class="login-container">
     <h1>Welcome to Relation!</h1>
     <h2>Connect, Share, and Grow Together</h2>
+
     <div class="buttons">
       <button class="google">Sign in with Google</button>
       <button class="apple">Sign in with Apple</button>
@@ -11,37 +12,29 @@
       <button class="create-account">Create Account</button>
     </div>
 
-    <!-- Login Modal -->
     <div v-if="showLogin" class="modal-overlay" @click.self="$emit('toggleModal')">
       <div class="modal-content">
         <button class="close-btn" @click="$emit('toggleModal')">&times;</button>
         <h3>Log In</h3>
+
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+
         <form @submit.prevent="$emit('login', { username: account, password: password })">
           <div class="form-group">
             <label for="account">Account</label>
-            <input
-              type="text"
-              id="account"
-              v-model="account"
-              placeholder="Enter your account"
-              required
-              autocomplete="username"
-            />
+            <input type="text" id="account" v-model="account" required />
           </div>
+
           <div class="form-group">
             <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              v-model="password"
-              placeholder="Enter your password"
-              required
-              autocomplete="current-password"
-            />
+            <input type="password" id="password" v-model="password" required />
           </div>
-          <button type="submit" class="submit-btn">Confirm</button>
+
+          <button type="submit" class="submit-btn" :disabled="isLoading">
+            <span v-if="isLoading" class="spinner"></span>
+            <span v-else>Confirm</span>
+          </button>
         </form>
-        <p>Don't have an account? <a href="#">Sign Up</a></p>
       </div>
     </div>
   </div>
@@ -50,11 +43,14 @@
 <script setup lang="ts">
 import { ref, defineProps } from 'vue';
 
-const props = defineProps<{ showLogin: boolean }>();
+const props = defineProps({
+  showLogin: Boolean,
+  isLoading: Boolean,
+  errorMessage: String
+});
 
 const account = ref('');
 const password = ref('');
-
 </script>
 
 <style scoped>
@@ -226,5 +222,53 @@ a:hover {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #161616;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: zoomIn 0.3s ease-in-out;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 </style>
