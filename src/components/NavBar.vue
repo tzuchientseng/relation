@@ -52,9 +52,17 @@
       <i class="fas fa-ellipsis-h"></i>
       <span>More</span>
     </a>
-    <a class="post-button" href="#">Post</a>
+
+    <a class="post-button" href="#" @click.prevent="showPostBox = true">Post</a>
 
     <AccountMenu />
+
+    <div v-if="showPostBox" class="post-modal-overlay" @click.self="closePostBox">
+      <div class="post-modal">
+        <button class="post-close-btn" @click="closePostBox">&times;</button>
+        <PostBox />
+      </div>
+    </div>
     
     <!-- 遊戲彈窗 -->
     <div v-if="showGameModal" class="game-modal-overlay" @click.self="closeModal">
@@ -70,15 +78,24 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import TileMatchingGame from '../components/game/TileMatchingGame.vue';
 import AccountMenu from './account/AccountMenu.vue';
+import PostBox from './post/PostBox.vue';
 
 export default defineComponent({
   name: 'NavBar',
   components: {
     AccountMenu,
     TileMatchingGame,
+    PostBox,
   },
   setup() {
+    // const showPostBox = ref(false);
+    const showPostBox = ref(false);
     const showGameModal = ref(false);
+
+    const closePostBox = () => {
+      showPostBox.value = false;
+    };
+
     const closeModal = () => {
       showGameModal.value = false;
     };
@@ -118,6 +135,8 @@ export default defineComponent({
       });
 
     return {
+      showPostBox,
+      closePostBox,
       showGameModal,
       closeModal,
       isVisible
@@ -282,6 +301,41 @@ body {
   width: 90%;
   max-width: 600px;
   position: relative;
+}
+
+/* Close button */
+.post-close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  font-size: large;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Modal overlay */
+.post-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(36, 45, 52, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.post-modal {
+  border-radius: 10px;
+  width: 100%;
+  max-width: 700px;
+  position: fixed;
+  top: 10%;
 }
 
 /* Close button */
