@@ -3,12 +3,14 @@ import { ActionContext } from "vuex";
 interface State {
   account: string,
   userName: string,
+  avatar: string,
   token: string | null;
 }
 
 const state: State = {
   account: localStorage.getItem("account") || "",
   userName: localStorage.getItem("userName") || "",
+  avatar: localStorage.getItem("avatar") !== "null" ? localStorage.getItem("avatar") || "" : "",
   token: localStorage.getItem("token") || null,
 };
 
@@ -27,15 +29,21 @@ const mutations = {
     state.userName = name;
     localStorage.setItem("userName", name);
   },
+  setAvatar(state: State, avatar: string): void {
+    state.avatar = avatar;
+    localStorage.setItem("avatar", avatar);
+  },
   setToken(state: State, token: string): void {
     state.token = token;
     localStorage.setItem("token", token);
   },
   clearUser(state: State): void {
     state.userName = "";
+    state.avatar = ""; 
     state.token = null;
     localStorage.removeItem("userName");
     localStorage.removeItem("token");
+    localStorage.removeItem("avatar"); 
   },
 };
 
@@ -63,6 +71,7 @@ const actions = {
       commit("setAccount", data.account);
       commit("setName", data.name);
       commit("setToken", data.access);
+      commit("setAvatar", data.avatar || "");
       return data;
     } catch (error) {
       console.error(error);

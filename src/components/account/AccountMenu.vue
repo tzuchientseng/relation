@@ -14,6 +14,7 @@
         :class="{ 'active': isMenuVisible }"
       >
         <AccountProfile 
+          :name="userName"
           :profileImage="profileImage"
           :friendsCount="friendsCount"
         />
@@ -25,18 +26,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import defaultImagePath from '@/assets/male.png';
+import defaultImagePath from '@/assets/male.png'; // 預設圖片
 import AccountProfile from './AccountProfile.vue';
 
 const store = useStore();
-const defaultImage = defaultImagePath;
-const profileImage = ref(defaultImage);
-const friendsCount = ref(0);
 const isMenuVisible = ref(false);
+const friendsCount = ref(0);
+
+// 從 Vuex 取得 `account` 和 `userName`
 const Account = computed(() => store.state.auth.account?.trim() || "_Account_");
 const userName = computed(() => store.state.auth.userName?.trim() || "Guest");
+
+// 計算 profileImage，若 `avatar` 為空則使用 `defaultImagePath`
+const profileImage = computed(() => {
+  const avatar = store.state.auth.avatar?.trim();
+  return avatar ? avatar : defaultImagePath;
+});
 
 const toggleMenu = () => {
   isMenuVisible.value = !isMenuVisible.value;
@@ -56,27 +63,6 @@ onMounted(() => {
 const handleLogout = () => {
   store.dispatch("auth/logout");
 };
-
-const fetchProfileImage = async () => {
-  try {
-    const response = await fetch('https://api.example.com/user/profilePict');
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.image) {
-        profileImage.value = data.image;
-      }
-    } else {
-      console.error('Failed to fetch profile image:', response.status);
-    }
-  } catch (error) {
-    console.error('Error fetching profile image:', error);
-  }
-};
-
-onMounted(() => {
-  fetchProfileImage();
-});
-
 </script>
 
 <style scoped>
