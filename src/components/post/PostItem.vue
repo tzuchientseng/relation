@@ -61,7 +61,7 @@ function formatDate(date: Date | string): string {
 
   const diffInHours = Math.floor(diffInMinutes / 60);
   if (diffInHours < 24) {
-    return `${diffInHours} h ago`;
+    return `${diffInHours}h ago`;
   }
 
   const diffInDays = Math.floor(diffInHours / 24);

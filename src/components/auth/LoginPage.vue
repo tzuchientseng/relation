@@ -1,5 +1,4 @@
 <template>
-  <!-- Initial Icon View -->
   <div v-if="showIcon" class="icon">
     <img src="@/assets/logo.png" alt="Logo" class="icon-img">
   </div>
@@ -7,7 +6,7 @@
   <div v-else class="container">
     <transition name="left-slide" appear>
       <div class="left-side">
-        <img src="../../assets/logo.png" alt="logo" id="logo">
+        <img src="@/assets/logo.png" alt="logo" id="logo">
       </div>
     </transition>
 
@@ -15,7 +14,9 @@
       <div class="right-side">
         <LoginCard 
           :showLogin="showLogin" 
-          @toggleModal="toggleLoginModal" 
+          :isLoading="isLoading" 
+          :errorMessage="errorMessage"
+          @toggleModal="toggleLoginModal"
           @login="handleLogin"
         />
       </div>
@@ -31,19 +32,27 @@ import LoginCard from './LoginCard.vue';
 const store = useStore();
 const showLogin = ref(false);
 const showIcon = ref(true);
+const isLoading = ref(false);
+const errorMessage = ref("");
 
 const toggleLoginModal = () => {
   showLogin.value = !showLogin.value;
+  errorMessage.value = "";
 };
 
-const handleLogin = async (payload: { userName: string; password: string }) => {
+const handleLogin = async (payload: { username: string; password: string }) => {
+  isLoading.value = true;
+  errorMessage.value = "";
+
   try {
     const response = await store.dispatch("auth/login", payload);
     toggleLoginModal();
     showIcon.value = false;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    alert("Login failed. Please try again.");
+    errorMessage.value = error?.response?.data?.message || "Login failed. Please try again.";
+  } finally {
+    isLoading.value = false;
   }
 };
 

@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import defaultImagePath from '@/assets/male.png'; // 預設圖片
+import defaultImagePath from '@/assets/male.png';
 import AccountProfile from './AccountProfile.vue';
 
 const store = useStore();
