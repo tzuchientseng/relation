@@ -51,8 +51,6 @@ export interface PostState {
 
 // 6. state：初始化
 const state: PostState = {
-  // 如果你需要把 posts 存在 localStorage，可以先嘗試 parse。
-  // 不過因為我們改成跟後端結構一致，可能會造成舊的 localStorage 格式不相容。
   posts: JSON.parse(localStorage.getItem('posts') || '[]'),
   account: localStorage.getItem('account') || '',
   userName: localStorage.getItem('userName') || '',
@@ -104,27 +102,28 @@ const mutations: MutationTree<PostState> = {
 // 9. Action
 const actions: ActionTree<PostState, any> = {
   // 9-1. 取得所有貼文
-  async fetchPosts({ commit, state }) {
+  // async fetchPosts({ commit, state }) {
+  async fetchPosts({ commit, rootState, getters }) {
     try {
-      if (!state.token) {
+      const token = rootState.auth.token || getters["auth/isAuthenticated"]; 
+      // if (!state.token) {
+      if (!token) {
         throw new Error("No authentication token found");
       }
+
       const response = await fetch(API_URL, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${state.token}`,
+          "Authorization": `Bearer ${token}`,
         },
       });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
       }
-      // 後端回傳形如 { count, next, previous, results: [...] }
-      const data: PostListResponse = await response.json();
-      console.log('fetchPosts data:', data);
 
-      // commit 給 SET_POSTS
+      const data: PostListResponse = await response.json();
       commit('SET_POSTS', data);
     } catch (error) {
       console.error("Error fetching posts:", error);
