@@ -25,11 +25,6 @@ const store = useStore();
 // 預設頁籤
 const activeTab = ref<'for-you' | 'following'>('for-you');
 
-// 如果需要在載入時呼叫後端 API，就解開下面註解
-// onMounted(() => {
-//   store.dispatch('postModule/fetchPosts');
-// });
-
 const allPosts = computed(() => store.getters['postModule/getAllPosts']);
 
 // 簡單分一半貼文給 for-you, 另一半給 following
