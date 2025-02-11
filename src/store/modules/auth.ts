@@ -1,5 +1,8 @@
 import { ActionContext } from "vuex";
 
+// const API_URL = 'https://home.sunnytseng.com/api/relation/token/'; // Deploy to server
+const API_URL = '/api/relation/token/';
+
 interface State {
   account: string,
   userName: string,
@@ -53,8 +56,7 @@ const actions = {
     payload: { username: string; password: string }
   ): Promise<any> {
     try {
-      // const response = await fetch("https://home.sunnytseng.com/api/relation/token/", { // Deploy to server
-      const response = await fetch("/api/relation/token/", {
+      const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

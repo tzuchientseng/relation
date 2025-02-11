@@ -124,6 +124,12 @@ onMounted(() => {
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .right-side {
+    margin-right: 12%;
+  }
+}
+
 @media (max-width: 600px) {
   .container {
     flex-direction: column;
@@ -138,6 +144,7 @@ onMounted(() => {
 
   .right-side {
     flex: 3;
+    margin-right: 0px;
     display: flex;
     color: white;
     flex-direction: column;
