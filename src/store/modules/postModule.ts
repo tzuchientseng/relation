@@ -1,208 +1,65 @@
-/*
-# TODO:
-
-- Backend Data
-
-*/
-//  以下為假資料
-const state: PostState = {
-  posts: [
-    {
-      id: '1',
-      userId: 'user_123',
-      username: 'John Doe',
-      avatar: 'https://i.pravatar.cc/100?img=1',
-      content: 'NEON !! ! The world\'s most difficult song to play and sing.🌍✨',
-      media: [
-        'https://i.ytimg.com/vi/_DfQC5qHhbo/maxresdefault.jpg',
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/JohnMayerin2019.jpg/640px-JohnMayerin2019.jpg',
-      ],
-      createTime: new Date(),
-      likes: 5,
-      retweets: 2,
-      replies: 3,
-      isLiked: false,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '2',
-      userId: 'user_456',
-      username: 'Jane Smith',
-      avatar: 'https://i.pravatar.cc/100?img=2',
-      content: 'John Mayer’s guitar playing is the perfect blend of technical mastery and soulful expression, making every note feel deeply personal. 🎉',
-      media: [
-        'https://cdn-p.smehost.net/sites/d563907ee0c84f41b15553bfb3eb554c/wp-content/uploads/2021/08/19439893172.jpg',
-      ],
-      createTime: new Date(),
-      likes: 8,
-      retweets: 3,
-      replies: 1,
-      isLiked: false,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '3',
-      userId: 'user_789',
-      username: 'Alice Johnson',
-      avatar: 'https://i.pravatar.cc/100?img=3',
-      content: 'His ability to seamlessly transition between blues, rock, and pop showcases his versatility and deep understanding of music. ☀️🌊',
-      media: ['https://achievems.com/wp-content/uploads/2023/06/john-mayer.jpg'],
-      createTime: new Date(),
-      likes: 12,
-      retweets: 5,
-      replies: 4,
-      isLiked: true,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '4',
-      userId: 'user_101',
-      username: 'Bob Lee',
-      avatar: 'https://i.pravatar.cc/100?img=4',
-      content: 'Mayer’s tone is instantly recognizable, with a warmth and clarity that sets him apart from almost any other guitarist. 😋',
-      media: ['https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/JohnMayerin2019.jpg/640px-JohnMayerin2019.jpg'],
-      createTime: new Date(),
-      likes: 15,
-      retweets: 4,
-      replies: 2,
-      isLiked: false,
-      isRetweeted: true,
-      comments: [],
-    },
-    {
-      id: '5',
-      userId: 'user_202',
-      username: 'Charlie Brown',
-      avatar: 'https://i.pravatar.cc/100?img=5',
-      content: 'His blues-inspired phrasing and impeccable touch make his solos sound like they’re telling a heartfelt story.🔥',
-      media: ['https://media.soundoflife.com/articles/1258/John-Mayer-3.jpg'],
-      createTime: new Date(),
-      likes: 20,
-      retweets: 6,
-      replies: 5,
-      isLiked: true,
-      isRetweeted: true,
-      comments: [],
-    },
-    {
-      id: '6',
-      userId: 'user_303',
-      username: 'Diana Prince',
-      avatar: 'https://i.pravatar.cc/100?img=6',
-      content: 'Watching John Mayer play live is like witnessing a masterclass in guitar dynamics, technique, and emotion.',
-      media: ['https://ysolife.com/wp-content/uploads/2024/07/john-mayer-live-dec-2022-billboard-1548.jpg'],
-      createTime: new Date(),
-      likes: 30,
-      retweets: 8,
-      replies: 7,
-      isLiked: true,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '7',
-      userId: 'user_404',
-      username: 'Ethan Hunt',
-      avatar: 'https://i.pravatar.cc/100?img=7',
-      content: 'His ability to make complex guitar techniques look effortless proves he’s not just talented but also incredibly disciplined. 🎯',
-      media: ['https://i8.amplience.net/i/naras/john-mayer_MI0005252722-MN0000239827'],
-      createTime: new Date(),
-      likes: 25,
-      retweets: 9,
-      replies: 3,
-      isLiked: false,
-      isRetweeted: true,
-      comments: [],
-    },
-    {
-      id: '8',
-      userId: 'user_505',
-      username: 'Fiona Gallagher',
-      avatar: 'https://i.pravatar.cc/100?img=8',
-      content: 'Mayer’s songwriting combined with his guitar skills creates timeless music that resonates across generations. 🌍',
-      media: ['https://blog.deplike.com/wp-content/uploads/2022/10/How-Did-John-Mayer-Learn-Guitar.jpg'],
-      createTime: new Date(),
-      likes: 18,
-      retweets: 5,
-      replies: 4,
-      isLiked: false,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '9',
-      userId: 'user_606',
-      username: 'George Costanza',
-      avatar: 'https://i.pravatar.cc/100?img=9',
-      content: 'His fingerstyle playing is so fluid and precise that it feels like an extension of his soul. 👑',
-      media: ['https://www.rollingstone.com/wp-content/uploads/2024/08/john-mayer-finger-injury.jpg?w=1581&h=1054&crop=1'],
-      createTime: new Date(),
-      likes: 22,
-      retweets: 4,
-      replies: 6,
-      isLiked: true,
-      isRetweeted: false,
-      comments: [],
-    },
-    {
-      id: '10',
-      userId: 'user_707',
-      username: 'Hannah Montana',
-      avatar: 'https://i.pravatar.cc/100?img=10',
-      content: 'John Mayer isn’t just a guitarist; he’s a storyteller whose instrument speaks as powerfully as his lyrics.',
-      media: ['https://i.ytimg.com/vi/1uJC7myYiQw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLC6TGgTMdDoHJCUVqgFEWV4IaZh8Q'],
-      createTime: new Date(),
-      likes: 35,
-      retweets: 10,
-      replies: 8,
-      isLiked: true,
-      isRetweeted: true,
-      comments: [],
-    },
-  ],
-  account: 'test_account',
-  userName: 'TestUser',
-  token: null,
-};
-//
-
 import { Module, MutationTree, ActionTree, GetterTree } from 'vuex';
 
-const API_URL = '/api/relation/posts';
+// const API_URL = 'https://home.sunnytseng.com/api/relation/posts/'; // Deploy to server
+const API_URL = '/api/relation/posts/';
 
+// 1. 後端回傳 User 物件
+export interface User {
+  id: number;
+  account: string;
+  name: string;
+  avatar: string;
+}
+
+// 2. 後端的 media 若非 null 就是一個陣列，含多個 { url, type }
+export interface MediaItem {
+  url: string;
+  type: string;
+}
+
+// 3. 跟後端一致的 Post 介面
 export interface Post {
   id: string;
-  userId: string;
-  username: string;
-  avatar: string;
+  user: User;                  // user 整個物件
+  username: string;            // 額外的欄位
   content: string;
-  media?: string[];
-  createTime: Date;
+  media: MediaItem[] | null;   // 可能是 null 或陣列
+  created_at: string;          // 後端是 created_at
   likes: number;
   retweets: number;
   replies: number;
-  isLiked: boolean;
-  isRetweeted: boolean;
-  comments?: Post[];
+  is_liked: boolean;           // 後端是 is_liked
+  is_retweeted: boolean;       // 後端是 is_retweeted
+  parent_post: string | null;  // 可能用不到，但後端有傳
 }
 
+// 4. 後端列表型態
+export interface PostListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Post[];
+}
+
+// 5. Vuex 中的 state，可以儲存後端的 posts，以及其他登入資訊
 export interface PostState {
-  posts: Post[];
+  posts: Post[];         // 存放後端回傳的陣列
   account: string;
   userName: string;
   token: string | null;
 }
 
-// const state: PostState = {
-//   posts: JSON.parse(localStorage.getItem('posts') || '[]'),
-//   account: localStorage.getItem('account') || '',
-//   userName: localStorage.getItem('userName') || '',
-//   token: localStorage.getItem('token') || null,
-// };
+// 6. state：初始化
+const state: PostState = {
+  // 如果你需要把 posts 存在 localStorage，可以先嘗試 parse。
+  // 不過因為我們改成跟後端結構一致，可能會造成舊的 localStorage 格式不相容。
+  posts: JSON.parse(localStorage.getItem('posts') || '[]'),
+  account: localStorage.getItem('account') || '',
+  userName: localStorage.getItem('userName') || '',
+  token: localStorage.getItem('token') || null,
+};
 
+// 7. Getter
 const getters: GetterTree<PostState, any> = {
   getAllPosts: (state) => state.posts,
   getPostById:
@@ -211,63 +68,85 @@ const getters: GetterTree<PostState, any> = {
       state.posts.find((post) => post.id === id),
 };
 
+// 8. Mutation
 const mutations: MutationTree<PostState> = {
-  SET_POSTS(state, posts: Post[]) {
-    state.posts = posts;
+  // 把後端整個列表 (results) 寫進 state
+  SET_POSTS(state, data: PostListResponse) {
+    state.posts = data.results;
   },
-  ADD_POST(state, post: Post) {
-    state.posts.unshift(post);
+
+  ADD_POST(state, newPost: Post) {
+    state.posts.unshift(newPost);
   },
+
   LIKE_POST(state, postId: string) {
     const post = state.posts.find((p) => p.id === postId);
     if (post) {
-      post.isLiked = !post.isLiked;
-      post.likes += post.isLiked ? 1 : -1;
+      // 跟後端欄位一致：is_liked
+      post.is_liked = !post.is_liked;
+      post.likes += post.is_liked ? 1 : -1;
     }
   },
+
   RETWEET_POST(state, postId: string) {
     const post = state.posts.find((p) => p.id === postId);
     if (post) {
-      post.isRetweeted = !post.isRetweeted;
-      post.retweets += post.isRetweeted ? 1 : -1;
+      post.is_retweeted = !post.is_retweeted;
+      post.retweets += post.is_retweeted ? 1 : -1;
     }
   },
+
   DELETE_POST(state, postId: string) {
     state.posts = state.posts.filter((post) => post.id !== postId);
   },
 };
 
+// 9. Action
 const actions: ActionTree<PostState, any> = {
-  // 取得所有貼文 (GET)
-  async fetchPosts({ commit }) {
+  // 9-1. 取得所有貼文
+  async fetchPosts({ commit, state }) {
     try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error('Failed to fetch posts');
-      const data: Post[] = await response.json();
+      if (!state.token) {
+        throw new Error("No authentication token found");
+      }
+      const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${state.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
+      }
+      // 後端回傳形如 { count, next, previous, results: [...] }
+      const data: PostListResponse = await response.json();
+      console.log('fetchPosts data:', data);
+
+      // commit 給 SET_POSTS
       commit('SET_POSTS', data);
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
     }
   },
 
-  // 新增貼文 (POST)
-  async createPost({ commit }, post: Omit<Post, 'id' | 'createTime' | 'likes' | 'retweets' | 'replies' | 'isLiked' | 'isRetweeted' | 'comments'>) {
+  // 9-2. 新增貼文 (POST)
+  //    由於我們現在的 Post interface 有很多後端自動帶的欄位 (例如 id, created_at)，
+  //    前端在發送時通常只需要 content、或附帶 media (binary)。
+  //    這裡視後端 API 格式而定，看是否要傳 body: { content }。
+  //    以下僅供參考寫法：
+  async createPost({ commit }, payload: { content: string }) {
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...post,
-          createTime: new Date(),
-          likes: 0,
-          retweets: 0,
-          replies: 0,
-          isLiked: false,
-          isRetweeted: false,
-          comments: [],
-        }),
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error('Failed to create post');
+      if (!response.ok) {
+        throw new Error('Failed to create post');
+      }
+      // 後端通常會回傳新建的那筆 Post 資料
       const newPost: Post = await response.json();
       commit('ADD_POST', newPost);
     } catch (error) {
@@ -275,10 +154,12 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 按讚 (PUT)
+  // 9-3. 按讚 (PUT)
+  //    假設後端 API 是 /api/relation/posts/:postId/like
+  //    並且後端會修改 is_liked / likes 數量
   async likePost({ commit }, postId: string) {
     try {
-      const response = await fetch(`${API_URL}/${postId}/like`, {
+      const response = await fetch(`${API_URL}${postId}/like`, {
         method: 'PUT',
       });
       if (!response.ok) throw new Error('Failed to like post');
@@ -288,10 +169,10 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 轉推 (PUT)
+  // 9-4. 轉推 (PUT)
   async retweetPost({ commit }, postId: string) {
     try {
-      const response = await fetch(`${API_URL}/${postId}/retweet`, {
+      const response = await fetch(`${API_URL}${postId}/retweet`, {
         method: 'PUT',
       });
       if (!response.ok) throw new Error('Failed to retweet post');
@@ -301,10 +182,10 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 刪除貼文 (DELETE)
+  // 9-5. 刪除貼文 (DELETE)
   async deletePost({ commit }, postId: string) {
     try {
-      const response = await fetch(`${API_URL}/${postId}`, {
+      const response = await fetch(`${API_URL}${postId}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete post');
@@ -315,7 +196,7 @@ const actions: ActionTree<PostState, any> = {
   },
 };
 
-// Module<S, R> 的型別參數： S：此模組內的 state 的型別 R：根 store 的 state 的型別
+// 10. 匯出這個 Module
 export const postModule: Module<PostState, any> = {
   namespaced: true,
   state,
