@@ -66,9 +66,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  /* height: 97vh; */
-  min-height: 97vh;
+  justify-content: center;  /* 垂直置中 */
+  height: 100vh;
   background-color: #000000;
 }
 
@@ -76,7 +75,7 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40vh;
+  height: 100vh;
 }
 
 .logo {
@@ -85,6 +84,11 @@ onMounted(() => {
 }
 
 .animated-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
   font-size: 2rem;
   font-weight: bold;
   color: white;
@@ -98,8 +102,6 @@ onMounted(() => {
   height: 100%;
   justify-content: center;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
 }
 
 .fade-enter-active,
