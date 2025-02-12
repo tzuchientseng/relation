@@ -1,3 +1,10 @@
+<!-- 
+TODO: 
+ 
+- 預設Post 空位 
+
+-->
+
 <template>
   <div class="post-container">
     <div class="tab-container">
@@ -45,7 +52,6 @@ const followingPosts = computed(() =>
 .post-container {
   display: flex;
   flex-direction: column;
-  margin-right: 4%;
   width: 45%;
   border: 1px solid #2F3336;
 }
@@ -85,8 +91,9 @@ const followingPosts = computed(() =>
 
 @media (max-width: 768px) {
 .post-container {
+  margin-left: 46px;
   width: 75%;
-  margin-left: auto; /* 靠右對齊 */
+  margin-top: 0px;
 }
 }
 </style>
