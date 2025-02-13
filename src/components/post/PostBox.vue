@@ -290,4 +290,10 @@ const handlePost = () => {
   background: #3a5469;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .post-input {
+    min-height: 40px;
+  }
+}
 </style>
