@@ -3,7 +3,13 @@ TODO:
 
 - Word limit spinner
 - Drafts function
-
+- icon function:
+    "fas fa-image",
+    "fas fa-chart-bar",
+    "fas fa-list-ul",
+    "fas fa-smile",
+    "fas fa-clock",
+    "fas fa-map-marker-alt",
 -->
 <template>
   <div class="post-box">
@@ -19,13 +25,29 @@ TODO:
       />
     </div>
 
+    <div v-if="showImageUpload" class="image-upload-section">
+      <div class="upload-header">
+        <label for="file-upload" class="file-label">📁 Choose File </label>
+        <input type="file" id="file-upload" accept="image/*" multiple class="file-input" @change="handleFileUpload" />
+        <button class="close-upload-btn" @click="showImageUpload = false">✖</button>
+      </div>
+
+
+      <div class="image-preview-container" v-if="imagePreviews.length">
+        <div v-for="(image, index) in imagePreviews" :key="index" class="image-preview">
+          <img :src="image" alt="uploaded image" class="uploaded-image" />
+          <button class="remove-image-btn" @click="removeImage(index)">✖</button>
+        </div>
+      </div>
+    </div>
+
     <div class="post-actions">
       <div class="icons">
-        <button v-for="icon in icons" :key="icon" class="icon-btn">
-          <i :class="icon"></i>
+        <button class="icon-btn" @click="toggleImageUpload">
+          <i class="fas fa-image"></i>
         </button>
       </div>
-      <button class="post-btn" :disabled="!postText.trim()" @click="postTweet">
+      <button class="post-btn" :disabled="!postText.trim() && imagePreviews.length === 0" @click="handlePost">
         Post
       </button>
     </div>
@@ -46,6 +68,9 @@ const userImage = computed(() => {
 
 const postText = ref("");
 const textareaRef = ref(null);
+const imagePreviews = ref([]);
+const imageFiles = ref([]);
+const showImageUpload = ref(false);
 
 const adjustHeight = () => {
   nextTick(() => {
@@ -60,18 +85,49 @@ onMounted(() => {
   adjustHeight();
 });
 
-const icons = ref([
-  "fas fa-image",
-  "fas fa-chart-bar",
-  "fas fa-list-ul",
-  "fas fa-smile",
-  "fas fa-clock",
-  "fas fa-map-marker-alt",
-]);
+const toggleImageUpload = () => {
+  showImageUpload.value = !showImageUpload.value;
+};
 
-const postTweet = () => {
-  alert(`Relation posted: ${postText.value}`);
+const handleFileUpload = (event) => {
+  const files = Array.from(event.target.files);
+
+  files.forEach((file) => {
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreviews.value.push(e.target.result);
+        imageFiles.value.push(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  event.target.value = "";
+};
+
+const removeImage = (index) => {
+  imagePreviews.value.splice(index, 1);
+  imageFiles.value.splice(index, 1);
+};
+
+const handlePost = () => {
+  const formData = new FormData();
+  formData.append("text", postText.value);
+
+  imageFiles.value.forEach((file) => {
+    formData.append("images", file);
+  });
+
+  console.log("發送的內容:", formData);
+
+  // Send API request (fetch / axios)
+
+  // Clear the input box and image
   postText.value = "";
+  imagePreviews.value = [];
+  imageFiles.value = [];
+  showImageUpload.value = false;
   adjustHeight();
 };
 </script>
@@ -110,7 +166,93 @@ const postTweet = () => {
   font-size: 20px;
   outline: none;
   resize: none;
-  overflow-y: hidden; /* 隱藏滾動條 */
+  overflow-y: hidden;
+}
+
+.image-upload-section {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-upload-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: inline-block;
+  background: #222;
+  color: #ccc;
+  padding: 2px 3px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  cursor: pointer;
+  text-align: center;
+}
+
+.file-label:hover {
+  background: #333;
+}
+
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-preview {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .post-actions {
