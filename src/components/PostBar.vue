@@ -1,10 +1,3 @@
-<!-- 
-TODO: 
- 
-- 預設Post 空位 
-
--->
-
 <template>
   <div class="post-container">
     <div class="tab-container">

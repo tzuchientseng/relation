@@ -66,15 +66,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;  /* 垂直置中 */
+  justify-content: center;
   height: 100vh;
   background-color: #000000;
 }
 
 .logo-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
 }
 

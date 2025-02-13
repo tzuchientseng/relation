@@ -19,7 +19,7 @@
           :friendsCount="friendsCount"
         />
         <p>Setting</p>
-        <button class="logout-btn" @click="handleLogout">Logout {{ userName }}</button>
+        <button class="logout-btn" @click="handleLogout">Logout - {{ userName }}</button>
       </div>
     </div>
   </div>
@@ -127,13 +127,15 @@ const handleLogout = () => {
 }
 
 .menu-dropdown p {
-  margin: 0;
+  margin: 2px;
+  border-radius: 5px;
+  background: #333;
   padding: 10px;
   cursor: pointer;
 }
 
 .menu-dropdown p:hover {
-  background: #333;
+  background: black;
   border-radius: 5px;
 }
 
