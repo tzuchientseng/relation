@@ -48,7 +48,8 @@ TODO:
         </button>
       </div>
       <button class="post-btn" :disabled="!postText.trim() && imagePreviews.length === 0" @click="handlePost">
-        Post
+        <span v-if="isLoading" class="spinner"></span>
+        <span v-else>Post</span>
       </button>
     </div>
   </div>
@@ -71,6 +72,7 @@ const textareaRef = ref(null);
 const imagePreviews = ref([]);
 const imageFiles = ref([]);
 const showImageUpload = ref(false);
+const isLoading=ref(false);
 
 const adjustHeight = () => {
   nextTick(() => {
@@ -111,24 +113,27 @@ const removeImage = (index) => {
   imageFiles.value.splice(index, 1);
 };
 
-const handlePost = () => {
-  const formData = new FormData();
-  formData.append("text", postText.value);
+const handlePost = async () => {
+  if (!postText.value.trim() && imageFiles.value.length === 0) return;
 
-  imageFiles.value.forEach((file) => {
-    formData.append("images", file);
-  });
+  isLoading.value = true;
 
-  console.log("發送的內容:", formData);
+  try {
+    await store.dispatch("postModule/createPost", {
+      content: postText.value,
+      images: imageFiles.value,
+    });
 
-  // Send API request (fetch / axios)
-
-  // Clear the input box and image
-  postText.value = "";
-  imagePreviews.value = [];
-  imageFiles.value = [];
-  showImageUpload.value = false;
-  adjustHeight();
+    postText.value = "";
+    imagePreviews.value = [];
+    imageFiles.value = [];
+    showImageUpload.value = false;
+    adjustHeight();
+  } catch (error) {
+    console.error("Error posting:", error);
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 
@@ -289,5 +294,26 @@ const handlePost = () => {
 .post-btn:disabled {
   background: #3a5469;
   cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .post-input {
+    min-height: 40px;
+  }
 }
 </style>
