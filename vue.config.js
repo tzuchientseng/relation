@@ -19,6 +19,7 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         target: 'https://home.sunnytseng.com/api',
+        // target: 'http://127.0.0.1:8000/api',
         changeOrigin: true, // 是否允許跨域
         pathRewrite: { '^/api': '' }, // 將 /api 替換為空（視需求設定）
       },

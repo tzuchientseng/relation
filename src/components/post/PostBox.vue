@@ -111,19 +111,14 @@ const removeImage = (index) => {
   imageFiles.value.splice(index, 1);
 };
 
-const handlePost = () => {
-  const formData = new FormData();
-  formData.append("text", postText.value);
+const handlePost = async () => {
+  if (!postText.value.trim() && imageFiles.value.length === 0) return;
 
-  imageFiles.value.forEach((file) => {
-    formData.append("images", file);
+  await store.dispatch("postModule/createPost", {
+    content: postText.value,
+    images: imageFiles.value,
   });
 
-  console.log("發送的內容:", formData);
-
-  // Send API request (fetch / axios)
-
-  // Clear the input box and image
   postText.value = "";
   imagePreviews.value = [];
   imageFiles.value = [];

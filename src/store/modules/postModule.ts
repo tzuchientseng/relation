@@ -135,21 +135,39 @@ const actions: ActionTree<PostState, any> = {
   //    前端在發送時通常只需要 content、或附帶 media (binary)。
   //    這裡視後端 API 格式而定，看是否要傳 body: { content }。
   //    以下僅供參考寫法：
-  async createPost({ commit }, payload: { content: string }) {
+  
+  async createPost(
+    { commit, rootState },
+    payload: { content: string; images: File[] }
+  ) {
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      const token: string | null = rootState.auth.token;
+      if (!token) throw new Error("Please login");
+
+      const formData = new FormData();
+
+      formData.append("text", payload.content);
+      payload.images.forEach((file) => {
+        formData.append("images", file);
       });
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Remove 'Content-Type' since FormData sets it automatically
+        },
+        body: formData, // 送出 multipart/form-data
+      });
+
       if (!response.ok) {
-        throw new Error('Failed to create post');
+        throw new Error("Failed to create post");
       }
-      // 後端通常會回傳新建的那筆 Post 資料
+
+      // The backend usually returns the newly created Post data
       const newPost: Post = await response.json();
-      commit('ADD_POST', newPost);
+      commit("ADD_POST", newPost);
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error("Error creating post:", error);
     }
   },
 
