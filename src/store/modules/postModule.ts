@@ -2,6 +2,7 @@ import { Module, MutationTree, ActionTree, GetterTree } from 'vuex';
 
 // const API_URL = 'https://home.sunnytseng.com/api/relation/posts/'; // Deploy to server
 const API_URL = '/api/relation/posts/';
+// const API_URL = '/api/relation/XXX';
 
 // 1. 後端回傳 User 物件
 export interface User {
@@ -152,7 +153,6 @@ const actions: ActionTree<PostState, any> = {
       });
 
       const response = await fetch(API_URL, {
-        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Remove 'Content-Type' since FormData sets it automatically
         },
