@@ -152,7 +152,6 @@ const actions: ActionTree<PostState, any> = {
       });
 
       const response = await fetch(API_URL, {
-        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Remove 'Content-Type' since FormData sets it automatically
         },
