@@ -1,7 +1,6 @@
 <!-- 
 TODO: 
 
-- Loaging spinner
 - Word limit spinner
 - Drafts function
 - icon function:
@@ -57,11 +56,12 @@ TODO:
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from "vue";
+import { ref, computed, onMounted, nextTick, defineEmits } from "vue";
 import { useStore } from 'vuex';
 import defaultImagePath from '@/assets/male.png';
 
 const store = useStore();
+const emit = defineEmits(["closeBox"]);
 
 const userImage = computed(() => {
   const avatar = store.state.auth.avatar?.trim();
@@ -134,6 +134,7 @@ const handlePost = async () => {
     console.error("Error posting:", error);
   } finally {
     isLoading.value = false;
+    emit("closeBox");
   }
 };
 </script>

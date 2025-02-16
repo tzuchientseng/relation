@@ -145,28 +145,30 @@ const actions: ActionTree<PostState, any> = {
       if (!token) throw new Error("Please login");
 
       const formData = new FormData();
-
       formData.append("text", payload.content);
+
       payload.images.forEach((file) => {
         formData.append("images", file);
       });
 
       const response = await fetch(API_URL, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Remove 'Content-Type' since FormData sets it automatically
         },
-        body: formData, // 送出 multipart/form-data
+        body: formData,
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create post");
+        const errorText = await response.text();
+        throw new Error(`Failed to create post: ${errorText}`);
       }
 
-      // The backend usually returns the newly created Post data
       const newPost: Post = await response.json();
       commit("ADD_POST", newPost);
     } catch (error) {
       console.error("Error creating post:", error);
+      throw error;
     }
   },
 

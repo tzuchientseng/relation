@@ -57,10 +57,15 @@
 
     <AccountMenu />
 
+
+    <!-- 不用 props 傳遞 <PostBox :closeBox="closePostBox" /> -->
+    <!-- import { defineProps } from "vue";
+    const props = defineProps(["closeBox"]); 
+    props.closeBox();-->
     <div v-if="showPostBox" class="post-modal-overlay" @click.self="closePostBox">
       <div class="post-modal">
         <button class="post-close-btn" @click="closePostBox">&times;</button>
-        <PostBox />
+        <PostBox @closeBox="closePostBox" />
       </div>
     </div>
     
