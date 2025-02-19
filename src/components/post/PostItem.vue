@@ -1,3 +1,6 @@
+<!-- 
+  TO-DO: UI lib icon 
+-->
 <template>
   <div class="post">
     <div class="post-header">
@@ -11,9 +14,10 @@
 
     <p class="post-content">{{ post.content }}</p>
 
-    <div v-if="post.media && post.media.length > 0">
-      <!-- 示範只顯示第一張圖片 -->
-      <img :src="post.media[0].url" :alt="post.media[0].type" class="post-media" />
+    <div v-if="post.media && post.media.length > 0" class="carousel">
+      <button @click="prevMedia" class="carousel-arrow left-arrow" v-show="showArrows && post.media.length > 1">‹</button>
+      <img v-if="currentMedia" :src="currentMedia.url" :alt="currentMedia.type" class="post-media" @mouseenter="showArrows = true" />
+      <button @click="nextMedia" class="carousel-arrow right-arrow" v-show="showArrows && post.media.length > 1">›</button>
     </div>
 
     <div class="post-actions">
@@ -23,19 +27,19 @@
       >
         ❤️ {{ post.likes }}
       </button>
-      <button
+      <!-- <button
         @click="retweetPost(post.id)"
         :class="{ retweeted: post.is_retweeted }"
       >
         🔁 {{ post.retweets }}
-      </button>
-      <button @click="deletePost(post.id)">🗑️</button>
+      </button> -->
+      <!-- <button @click="deletePost(post.id)">🗑️</button> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { ref, defineProps } from 'vue';
 import { useStore } from 'vuex';
 
 import type { Post } from '@/store/modules/postModule';
@@ -43,6 +47,9 @@ import type { Post } from '@/store/modules/postModule';
 const props = defineProps<{ post: Post }>();
 
 const store = useStore();
+const showArrows = ref(false);
+const currentIndex = ref(0);
+const currentMedia = ref(props.post.media && props.post.media.length > 0 ? props.post.media[0] : null);
 
 function formatDate(dateStr: string): string {
   const past = new Date(dateStr).getTime();
@@ -62,6 +69,20 @@ function formatDate(dateStr: string): string {
   }
   const diffInDays = Math.floor(diffInHours / 24);
   return `${diffInDays}d ago`;
+}
+
+function prevMedia() {
+  if (props.post.media && currentIndex.value > 0) {
+    currentIndex.value--;
+    currentMedia.value = props.post.media[currentIndex.value];
+  }
+}
+
+function nextMedia() {
+  if (props.post.media && currentIndex.value < props.post.media.length - 1) {
+    currentIndex.value++;
+    currentMedia.value = props.post.media[currentIndex.value];
+  }
 }
 
 // Dispatch
@@ -158,4 +179,47 @@ button {
 .post-content {
   font-size: 77%;
 }
+
+.carousel {
+  position: relative;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 7px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.left-arrow {
+  left: 0;
+}
+
+.right-arrow {
+  right: 0;
+}
+
+.carousel:hover .carousel-arrow {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+.carousel-arrow { 
+  opacity: 1;
+  font-size: 17px;
+  padding: 2px;
+}
+.carousel:hover .carousel-arrow {
+    opacity: 1;
+  }
+}
+
 </style>

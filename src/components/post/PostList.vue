@@ -1,3 +1,6 @@
+<!-- 
+  TO-DO: loading spinner 
+-->
 <template>
   <div>
     <PostItem
