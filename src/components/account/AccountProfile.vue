@@ -1,18 +1,20 @@
 <template>
-  <div class="account-profile" @click="toggleOverlay">
-    <p class="setting-style">Account Profile</p>
+  <div class="account-profile">
+    <p class="setting-style" @click.stop="toggleOverlay">Account Profile</p>
+
     <div v-if="showOverlay" class="overlay-div">
       <div class="overlay-content">
-        <img :src="profileImage" alt="Profile Picture" class="overlay-profile-image" />
-        <h4>{{ name }}</h4>
-        <p>Friend: {{ friendCount }}</p>
+        <img :src="computedProfileImage" alt="Profile Picture" class="overlay-profile-image" />
+        <h4>{{ computedName }}</h4>
+        <p>Friends: {{ computedFriendCount }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, computed, defineProps } from 'vue';
+import defaultImagePath from '@/assets/male.png';
 
 const showOverlay = ref(false);
 
@@ -20,20 +22,25 @@ const toggleOverlay = () => {
   showOverlay.value = !showOverlay.value;
 };
 
-defineProps({
+const props = defineProps({
   profileImage: {
     type: String,
-    required: true,
+    default: "",
   },
   name: {
     type: String,
-    required: true,
+    default: "Guest",
   },
   friendCount: {
     type: Number,
-    required: true,
+    default: 0,
   },
 });
+
+// 計算顯示圖片，若 profileImage 為空則使用預設圖片
+const computedProfileImage = computed(() => props.profileImage || defaultImagePath);
+const computedName = computed(() => props.name || "Guest");
+const computedFriendCount = computed(() => props.friendCount || 0);
 </script>
 
 <style scoped>
@@ -126,4 +133,3 @@ p {
   }
 }
 </style>
-

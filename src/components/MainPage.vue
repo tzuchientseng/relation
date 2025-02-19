@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, provide } from 'vue';
 import { useStore } from 'vuex';
 import NavBar from './NavBar.vue';
 import NewsBar from './NewsBar.vue';
@@ -50,16 +50,35 @@ const animateText = (text: string) => {
 onMounted(() => {
   setTimeout(() => {
     showAnimatedText.value = true;
-
-    // animateText(`Hello, ${userName}!`);
     animateText(`Hello, ${userName.value}!`);
-
     setTimeout(() => {
       showApp.value = true;
     }, 1200);
   }, 1000);
 });
+
+// **監聽 body 滾動**
+const isScrollingDown = ref(false);
+let lastScrollY = 0;
+
+const updateScroll = () => {
+  const currentScrollY = document.body.scrollTop || document.documentElement.scrollTop;
+  isScrollingDown.value = currentScrollY > lastScrollY;
+  lastScrollY = currentScrollY;
+};
+
+onMounted(() => {
+  document.body.addEventListener('scroll', updateScroll);
+});
+
+onUnmounted(() => {
+  document.body.removeEventListener('scroll', updateScroll);
+});
+
+// **提供 `isScrollingDown` 給子組件**
+provide('isScrollingDown', isScrollingDown);
 </script>
+
 
 <style scoped>
 .main-page {
@@ -67,16 +86,15 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* height: 97vh; */
-  min-height: 97vh;
+  height: 100vh;
   background-color: #000000;
 }
 
 .logo-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 40vh;
+  justify-content: center;
+  height: 100vh;
 }
 
 .logo {
@@ -85,6 +103,11 @@ onMounted(() => {
 }
 
 .animated-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
   font-size: 2rem;
   font-weight: bold;
   color: white;
@@ -98,8 +121,6 @@ onMounted(() => {
   height: 100%;
   justify-content: center;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
 }
 
 .fade-enter-active,

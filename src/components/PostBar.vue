@@ -1,6 +1,6 @@
 <template>
-  <div class="post-container">
-    <div class="tab-container">
+  <div class="post-container" :class="{ expanded: isScrollingDown, 'with-margin': !isScrollingDown }">
+    <div class="tab-container" v-if="!isScrollingDown">
       <div :class="{ active: activeTab === 'for-you' }" id="for-you" @click="activeTab = 'for-you'">
         For You
       </div>
@@ -9,30 +9,25 @@
       </div>
     </div>
 
-    <!-- 根據 activeTab 顯示不同的 PostList -->
+    <!-- 貼文列表 -->
     <PostList v-if="activeTab === 'for-you'" :posts="forYouPosts" />
     <PostList v-else :posts="followingPosts" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { useStore } from 'vuex';
-import PostList from './post/PostList.vue'; // 調整到你實際的路徑
+import PostList from './post/PostList.vue';
 
 const store = useStore();
 
-// 預設頁籤
+// 當前的 tab 狀態
 const activeTab = ref<'for-you' | 'following'>('for-you');
 
-// 如果需要在載入時呼叫後端 API，就解開下面註解
-// onMounted(() => {
-//   store.dispatch('postModule/fetchPosts');
-// });
-
+// 取得 Vuex 貼文數據
 const allPosts = computed(() => store.getters['postModule/getAllPosts']);
 
-// 簡單分一半貼文給 for-you, 另一半給 following
 const forYouPosts = computed(() =>
   allPosts.value.length
     ? allPosts.value.slice(0, Math.ceil(allPosts.value.length / 2))
@@ -44,23 +39,49 @@ const followingPosts = computed(() =>
     ? allPosts.value.slice(Math.ceil(allPosts.value.length / 2))
     : []
 );
+
+// 注入滾動狀態
+const isScrollingDown = inject('isScrollingDown', ref(false));
 </script>
 
 <style scoped>
 .post-container {
   display: flex;
   flex-direction: column;
-  margin-right: 4%;
   width: 45%;
+  height: auto;
   border: 1px solid #2F3336;
+  transition: all 0.3s ease-in-out;
 }
 
+/* 向下滾動時，撐滿整個畫面 */
+.post-container.expanded {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  padding-top: 0;
+  margin-top: 0;
+  margin-left: 0; /* 向下滾動時沒有 margin */
+}
+
+/* 向上滾動時，恢復 margin */
+.post-container.with-margin {
+  margin-left: 46px;
+}
+
+/* tab 控制 */
 .tab-container {
   display: flex;
   height: 50px;
   border-bottom: 1px solid #2F3336;
 }
 
+/* 讓 Tab 只有在未滾動時顯示 */
+.post-container.expanded .tab-container {
+  display: none;
+}
+
+/* Tab 樣式 */
 #for-you,
 #following {
   width: 50%;
@@ -68,30 +89,18 @@ const followingPosts = computed(() =>
   line-height: 50px;
   color: #71767B;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#for-you {
-  border-right: 1px solid #2F3336;
 }
 
 .active {
   font-weight: bold;
   color: #000;
-  border-bottom: 2px solid #1DA1F2; /* Twitter blue */
+  border-bottom: 2px solid #1DA1F2;
 }
 
-@media (max-width: 1200px) and (min-width: 768px) {
-.post-container {
-  width: 70%;
-  margin-left: auto; /* 靠右對齊 */
-}
-}
-
+/* 響應式調整 */
 @media (max-width: 768px) {
-.post-container {
-  width: 75%;
-  margin-left: auto; /* 靠右對齊 */
-}
+  .post-container {
+    width: 75%;
+  }
 }
 </style>

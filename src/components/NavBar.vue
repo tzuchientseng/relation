@@ -1,9 +1,3 @@
-<!-- 
-# TODO:
-
-- Nav scrolling-animation
-
--->
 <template>
   <div class="sidebar" :class="{ hidden: !isVisible }">
     <img id="nav-item" src="../assets/logo.png" alt="icon">
@@ -52,9 +46,22 @@
       <i class="fas fa-ellipsis-h"></i>
       <span>More</span>
     </a>
-    <a class="post-button" href="#">Post</a>
+
+    <a class="post-button" href="#" @click.prevent="showPostBox = true">Post</a>
 
     <AccountMenu />
+
+
+    <!-- 不用 props 傳遞 <PostBox :closeBox="closePostBox" /> -->
+    <!-- import { defineProps } from "vue";
+    const props = defineProps(["closeBox"]); 
+    props.closeBox();-->
+    <div v-if="showPostBox" class="post-modal-overlay" @click.self="closePostBox">
+      <div class="post-modal">
+        <button class="post-close-btn" @click="closePostBox">&times;</button>
+        <PostBox @closeBox="closePostBox" />
+      </div>
+    </div>
     
     <!-- 遊戲彈窗 -->
     <div v-if="showGameModal" class="game-modal-overlay" @click.self="closeModal">
@@ -67,60 +74,59 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
+import { defineComponent, ref, computed, onMounted, onUnmounted, inject } from 'vue';
 import TileMatchingGame from '../components/game/TileMatchingGame.vue';
 import AccountMenu from './account/AccountMenu.vue';
+import PostBox from './post/PostBox.vue';
 
 export default defineComponent({
   name: 'NavBar',
   components: {
     AccountMenu,
     TileMatchingGame,
+    PostBox,
   },
   setup() {
+    const showPostBox = ref(false);
     const showGameModal = ref(false);
+    const windowWidth = ref(window.innerWidth);
+
+    const closePostBox = () => {
+      showPostBox.value = false;
+    };
+
     const closeModal = () => {
       showGameModal.value = false;
     };
 
-  // 控制是否可見
-      const isVisible = ref(true);
-      let lastScrollPosition = 0;
+    const injectedIsScrollingDown = inject('isScrollingDown', ref(false));
 
-      // 僅在小螢幕（<= 768px）時，才啟用捲動隱藏
-      const handleScroll = () => {
-        // 判斷螢幕寬度
-        if (window.innerWidth > 768) {
-          // 大螢幕：保持顯示，不做隱藏
-          isVisible.value = true;
-          return;
-        }
+    const isScrollingDown = computed(() => injectedIsScrollingDown.value);
 
-        // 小螢幕情況：偵測向上 / 向下
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > lastScrollPosition) {
-          // 向下 → 隱藏
-          isVisible.value = false;
-        } else {
-          // 向上 → 顯示
-          isVisible.value = true;
-        }
-        lastScrollPosition = currentScroll;
-      };
+    const isVisible = computed(() => {
+      return windowWidth.value > 768 || !isScrollingDown.value;
+    });
 
-      onMounted(() => {
-        // 監聽滾動
-        window.addEventListener('scroll', handleScroll);
-      });
 
-      onUnmounted(() => {
-        window.removeEventListener('scroll', handleScroll);
-      });
+    // 監聽視窗大小變化
+    const updateWindowWidth = () => {
+      windowWidth.value = window.innerWidth;
+    };
+
+    onMounted(() => {
+      window.addEventListener('resize', updateWindowWidth);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', updateWindowWidth);
+    });
 
     return {
+      showPostBox,
+      closePostBox,
       showGameModal,
       closeModal,
-      isVisible
+      isVisible,
     };
   },
 });
@@ -285,6 +291,41 @@ body {
 }
 
 /* Close button */
+.post-close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  font-size: large;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Modal overlay */
+.post-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(36, 45, 52, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.post-modal {
+  border-radius: 10px;
+  width: 100%;
+  max-width: 700px;
+  position: fixed;
+  top: 10%;
+}
+
+/* Close button */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -294,5 +335,10 @@ body {
   font-size: 20px;
   cursor: pointer;
   color: #000;
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-in-out;
 }
 </style>
