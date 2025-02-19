@@ -3,7 +3,7 @@ import { Module, MutationTree, ActionTree, GetterTree } from 'vuex';
 // const API_URL = 'https://home.sunnytseng.com/api/relation/posts/'; // Deploy to server
 const API_URL = '/api/relation/posts/';
 
-// 1. 後端回傳 User 物件
+// Backend: User Table
 export interface User {
   id: number;
   account: string;
@@ -11,29 +11,28 @@ export interface User {
   avatar: string;
 }
 
-// 2. 後端的 media 若非 null 就是一個陣列，含多個 { url, type }
+// Backend: media (null, array)
 export interface MediaItem {
   url: string;
   type: string;
 }
 
-// 3. 跟後端一致的 Post 介面
+// Backend Post Table
 export interface Post {
   id: string;
-  user: User;                  // user 整個物件
-  username: string;            // 額外的欄位
+  user: User;
+  username: string;
   content: string;
-  media: MediaItem[] | null;   // 可能是 null 或陣列
-  created_at: string;          // 後端是 created_at
+  media: MediaItem[] | null;
+  created_at: string;
   likes: number;
   retweets: number;
   replies: number;
-  is_liked: boolean;           // 後端是 is_liked
-  is_retweeted: boolean;       // 後端是 is_retweeted
-  parent_post: string | null;  // 可能用不到，但後端有傳
+  is_liked: boolean;
+  is_retweeted: boolean;
+  parent_post: string | null;
 }
 
-// 4. 後端列表型態
 export interface PostListResponse {
   count: number;
   next: string | null;
@@ -41,15 +40,14 @@ export interface PostListResponse {
   results: Post[];
 }
 
-// 5. Vuex 中的 state，可以儲存後端的 posts，以及其他登入資訊
 export interface PostState {
-  posts: Post[];         // 存放後端回傳的陣列
+  posts: Post[];
   account: string;
   userName: string;
   token: string | null;
 }
 
-// 6. state：初始化
+//  vuex: state initial
 const state: PostState = {
   posts: JSON.parse(localStorage.getItem('posts') || '[]'),
   account: localStorage.getItem('account') || '',
@@ -57,7 +55,6 @@ const state: PostState = {
   token: localStorage.getItem('token') || null,
 };
 
-// 7. Getter
 const getters: GetterTree<PostState, any> = {
   getAllPosts: (state) => state.posts,
   getPostById:
@@ -66,9 +63,7 @@ const getters: GetterTree<PostState, any> = {
       state.posts.find((post) => post.id === id),
 };
 
-// 8. Mutation
 const mutations: MutationTree<PostState> = {
-  // 把後端整個列表 (results) 寫進 state
   SET_POSTS(state, data: PostListResponse) {
     state.posts = data.results;
   },
@@ -80,7 +75,6 @@ const mutations: MutationTree<PostState> = {
   LIKE_POST(state, postId: string) {
     const post = state.posts.find((p) => p.id === postId);
     if (post) {
-      // 跟後端欄位一致：is_liked
       post.is_liked = !post.is_liked;
       post.likes += post.is_liked ? 1 : -1;
     }
@@ -99,9 +93,7 @@ const mutations: MutationTree<PostState> = {
   },
 };
 
-// 9. Action
 const actions: ActionTree<PostState, any> = {
-  // 9-1. 取得所有貼文
   // async fetchPosts({ commit, state }) {
   async fetchPosts({ commit, rootState, getters }) {
     try {
@@ -130,12 +122,6 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 9-2. 新增貼文 (POST)
-  //    由於我們現在的 Post interface 有很多後端自動帶的欄位 (例如 id, created_at)，
-  //    前端在發送時通常只需要 content、或附帶 media (binary)。
-  //    這裡視後端 API 格式而定，看是否要傳 body: { content }。
-  //    以下僅供參考寫法：
-  
   async createPost(
     { commit, rootState },
     payload: { content: string; images: File[] }
@@ -172,9 +158,7 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 9-3. 按讚 (PUT)
-  //    假設後端 API 是 /api/relation/posts/:postId/like
-  //    並且後端會修改 is_liked / likes 數量
+
   async likePost({ commit }, postId: string) {
     try {
       const response = await fetch(`${API_URL}${postId}/like`, {
@@ -187,7 +171,7 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 9-4. 轉推 (PUT)
+  // 轉推 (PUT)
   async retweetPost({ commit }, postId: string) {
     try {
       const response = await fetch(`${API_URL}${postId}/retweet`, {
@@ -200,7 +184,6 @@ const actions: ActionTree<PostState, any> = {
     }
   },
 
-  // 9-5. 刪除貼文 (DELETE)
   async deletePost({ commit }, postId: string) {
     try {
       const response = await fetch(`${API_URL}${postId}`, {
@@ -214,7 +197,6 @@ const actions: ActionTree<PostState, any> = {
   },
 };
 
-// 10. 匯出這個 Module
 export const postModule: Module<PostState, any> = {
   namespaced: true,
   state,
