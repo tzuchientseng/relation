@@ -56,7 +56,7 @@ const isScrollingDown = inject('isScrollingDown', ref(false));
 
 /* 向下滾動時，撐滿整個畫面 */
 .post-container.expanded {
-  width: 100vw;
+  width: 50vw;
   height: 100vh;
   border: none;
   padding-top: 0;
@@ -99,6 +99,10 @@ const isScrollingDown = inject('isScrollingDown', ref(false));
 
 /* 響應式調整 */
 @media (max-width: 768px) {
+  .post-container.expanded {
+   width: 90vw; 
+  }
+
   .post-container {
     width: 75%;
   }
