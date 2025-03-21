@@ -1,6 +1,6 @@
 import { ActionContext } from "vuex";
 
-// const API_URL = 'https://home.sunnytseng.com/api/relation/token/'; // Deploy to server
+// const API_URL = 'https://sunnytseng.com/api/relation/token/'; // Deploy to server
 const API_URL = '/api/relation/token/';
 
 interface State {
@@ -11,10 +11,10 @@ interface State {
 }
 
 const state: State = {
-  account: localStorage.getItem("account") || "",
-  userName: localStorage.getItem("userName") || "",
-  avatar: localStorage.getItem("avatar") !== "null" ? localStorage.getItem("avatar") || "" : "",
-  token: localStorage.getItem("token") || null,
+  account: sessionStorage.getItem("account") || "",
+  userName: sessionStorage.getItem("userName") || "",
+  avatar: sessionStorage.getItem("avatar") !== "null" ? sessionStorage.getItem("avatar") || "" : "",
+  token: sessionStorage.getItem("token") || null,
 };
 
 const getters = {
@@ -26,27 +26,27 @@ const getters = {
 const mutations = {
   setAccount (state: State, account: string): void {
     state.account = account;
-    localStorage.setItem("account", account);
+    sessionStorage.setItem("account", account);
   },
   setName (state: State, name: string): void {
     state.userName = name;
-    localStorage.setItem("userName", name);
+    sessionStorage.setItem("userName", name);
   },
   setAvatar(state: State, avatar: string): void {
     state.avatar = avatar;
-    localStorage.setItem("avatar", avatar);
+    sessionStorage.setItem("avatar", avatar);
   },
   setToken(state: State, token: string): void {
     state.token = token;
-    localStorage.setItem("token", token);
+    sessionStorage.setItem("token", token);
   },
   clearUser(state: State): void {
     state.userName = "";
     state.avatar = ""; 
     state.token = null;
-    localStorage.removeItem("userName");
-    localStorage.removeItem("token");
-    localStorage.removeItem("avatar"); 
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("avatar"); 
   },
 };
 

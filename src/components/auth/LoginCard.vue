@@ -22,12 +22,26 @@
         <form @submit.prevent="$emit('login', { username: account, password: password })">
           <div class="form-group">
             <label for="account">Account</label>
-            <input type="text" id="account" v-model="account" placeholder="guest" required />
+            <input
+              type="text"
+              id="account"
+              v-model="account"
+              placeholder="guest"
+              required
+              autocomplete="username"
+            />
           </div>
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" v-model="password" placeholder="guest" required />
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              placeholder="guest"
+              required
+              autocomplete="current-password"
+            />
           </div>
 
           <button type="submit" class="submit-btn" :disabled="isLoading">

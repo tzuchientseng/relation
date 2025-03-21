@@ -8,7 +8,7 @@
 
 /*
 // .env.production 文件
-VUE_APP_API_URL=https://home.sunnytseng.com/api
+VUE_APP_API_URL=https://sunnytseng.com/api
 `const response = await fetch(`${process.env.VUE_APP_API_URL}/relation/token/`, {`
 */
 
@@ -18,7 +18,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://home.sunnytseng.com/api',
+        target: 'https://sunnytseng.com/api',
         changeOrigin: true, // 是否允許跨域
         pathRewrite: { '^/api': '' }, // 將 /api 替換為空（視需求設定）
       },
