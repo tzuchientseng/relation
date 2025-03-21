@@ -73,7 +73,7 @@ const textareaRef = ref(null);
 const imagePreviews = ref([]);
 const imageFiles = ref([]);
 const showImageUpload = ref(false);
-const isLoading=ref(false);
+const isLoading = ref(false);
 
 const adjustHeight = () => {
   nextTick(() => {
